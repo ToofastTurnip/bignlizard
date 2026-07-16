@@ -577,7 +577,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
     margin: 0 auto var(--space-2);
     --box-w: clamp(140px, 46vw, 190px);
   }
-  .game-card { width: 100%; flex: 1 1 auto; }
+  .game-card { width: 100%; }
 }
 
 .scroll-cue {
@@ -901,6 +901,13 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   border: 1px solid var(--color-border-dark);
   border-radius: calc(var(--radius-md) - 4px);
   pointer-events: none;
+}
+
+/* .game-row goes column-direction below 720px (see above), which turns the
+   320px flex-basis into a min-height instead of a min-width; switch it to
+   auto so each card hugs its own content instead of padding out to 320px. */
+@media (max-width: 720px) {
+  .game-card { flex: 1 1 auto; }
 }
 
 .game-status {
