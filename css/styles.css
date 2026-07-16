@@ -559,10 +559,25 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   .site-header { backdrop-filter: none; background: rgba(21, 13, 8, 0.97); }
   .hero-bg { animation: none; }
   /* below-the-fold sections render lazily as they approach the viewport */
-  .games-section, .news-section, .about-section, .site-footer {
+  .news-section, .about-section, .site-footer {
     content-visibility: auto;
     contain-intrinsic-size: auto 900px;
   }
+  /* stacked game rows (box art + card) run taller than the other sections */
+  .games-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1700px;
+  }
+  .game-row, .game-row:nth-child(even) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .game-box-wrap {
+    margin: 0 auto var(--space-2);
+    --box-w: clamp(140px, 46vw, 190px);
+  }
+  .game-card { width: 100%; }
 }
 
 .scroll-cue {
@@ -736,14 +751,138 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 .games-section .section-title { color: var(--color-ink); }
 .games-section .section-lede { color: var(--color-ink-soft); }
 
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-5);
+.game-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.game-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* Alternate sides every row: box stays first in the DOM (so it never
+   affects tab/reading order), CSS flips which side it renders on. */
+.game-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+/* Staggered vertical rhythm via margin/padding (not transform) so it reads
+   as a hand-placed zigzag without conflicting with .reveal's own transform. */
+.game-row:nth-child(2) { margin-top: calc(var(--space-5) * -1); padding-left: var(--space-5); }
+.game-row:nth-child(3) { margin-top: var(--space-3); padding-right: var(--space-5); }
+
+/* --- 3D box art: a small CSS box that idles with a slow tilt and grows
+   slightly on hover. Front face doubles as a placeholder using the game's
+   status-tinted color + line icon; swap in real cover art later via the
+   --box-cover custom property without touching markup. --- */
+.game-box-wrap {
+  --box-w: clamp(150px, 20vw, 210px);
+  width: var(--box-w);
+  aspect-ratio: 3 / 4;
+  flex: 0 0 auto;
+  margin: 0 auto;
+  perspective: 1000px;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.game-row:hover .game-box-wrap,
+.game-box-wrap:hover {
+  transform: scale(1.08);
+}
+
+.game-box {
+  --box-depth: 24px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: box-tilt 6.4s ease-in-out infinite;
+}
+/* Desync the three boxes so they don't all sway in unison */
+.game-row:nth-child(2) .game-box { animation-delay: -2.1s; }
+.game-row:nth-child(3) .game-box { animation-delay: -4.3s; }
+
+@keyframes box-tilt {
+  0%, 100% { transform: rotateY(-6deg) rotateX(1deg); }
+  30%      { transform: rotateY(4deg)  rotateX(-1deg); }
+  60%      { transform: rotateY(-3deg) rotateX(1.5deg); }
+  80%      { transform: rotateY(5deg)  rotateX(-0.5deg); }
+}
+
+.box-face {
+  position: absolute;
+  border-radius: var(--radius-sm);
+}
+.box-front {
+  inset: 0;
+  transform: translateZ(calc(var(--box-depth) / 2));
+  background: var(--box-tint);
+  background-image: var(--box-cover, none);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18), 0 10px 22px rgba(44,28,16,0.35);
+}
+.box-top {
+  top: 0; left: 0; right: 0;
+  height: var(--box-depth);
+  background: var(--box-tint-light);
+  transform: rotateX(90deg) translateZ(calc(var(--box-depth) / 2));
+}
+.box-spine {
+  top: 0; bottom: 0; right: 0;
+  width: var(--box-depth);
+  background: var(--box-tint-dark);
+  transform: rotateY(90deg) translateZ(calc(var(--box-depth) / 2));
+}
+
+.box-icon {
+  width: 46%;
+  height: 46%;
+  color: var(--color-paper);
+  opacity: 0.92;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+}
+
+.game-box--dev {
+  --box-tint: var(--color-ember);
+  --box-tint-light: #c94b36;
+  --box-tint-dark: var(--color-ember-dark);
+}
+.game-box--playtest {
+  --box-tint: var(--color-forest);
+  --box-tint-light: #587a4a;
+  --box-tint-dark: #33452c;
+}
+.game-box--soon {
+  --box-tint: var(--color-gold);
+  --box-tint-light: var(--color-gold-bright);
+  --box-tint-dark: #b3822c;
+}
+.game-box--soon .box-icon { color: var(--color-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-box {
+    animation: none !important;
+    transform: rotateY(-8deg) rotateX(2deg);
+  }
+}
+
+@media (max-width: 860px) {
+  .game-rows { gap: var(--space-6); }
+  .game-row:nth-child(2),
+  .game-row:nth-child(3) { margin-top: 0; padding-left: 0; padding-right: 0; }
+  .game-box-wrap { --box-w: clamp(130px, 22vw, 170px); }
 }
 
 .game-card {
   position: relative;
+  flex: 1 1 320px;
+  min-width: 0;
   background: var(--color-paper);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
@@ -779,13 +918,6 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 .status-dev { background: var(--color-ember); }
 .status-playtest { background: var(--color-forest); }
 .status-soon { background: var(--color-gold); color: var(--color-ink); }
-
-.game-icon {
-  width: 56px;
-  height: 56px;
-  color: var(--color-ember-dark);
-  margin-bottom: var(--space-3);
-}
 
 .game-title {
   font-size: 1.4rem;

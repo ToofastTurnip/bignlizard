@@ -27,7 +27,7 @@
   }
 
   // Scroll-reveal for cards (progressive enhancement; content is visible without JS/if IO unsupported)
-  var revealTargets = document.querySelectorAll(".game-card, .news-item, .about-text");
+  var revealTargets = document.querySelectorAll(".game-row, .news-item, .about-text");
   revealTargets.forEach(function (el) {
     el.classList.add("reveal");
   });
