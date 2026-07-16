@@ -769,6 +769,12 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   flex-direction: row-reverse;
 }
 
+/* Same cascade-order pitfall as .game-card above: this has equal specificity
+   to the row-reverse rule and must come after it to win at mobile widths. */
+@media (max-width: 720px) {
+  .game-row:nth-child(even) { flex-direction: column; }
+}
+
 /* Staggered vertical rhythm via margin/padding (not transform) so it reads
    as a hand-placed zigzag without conflicting with .reveal's own transform. */
 .game-row:nth-child(2) { margin-top: calc(var(--space-5) * -1); padding-left: var(--space-5); }
