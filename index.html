@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big n Lizard | Indie Fantasy Board Games</title>
+<meta name="description" content="Big n Lizard is an indie board game company making fantasy tabletop games. See upcoming releases and where to find us at conventions.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- Shared SVG gradient/definitions, reused by both hero torches -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="glowGrad" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffcf7d" stop-opacity="0.85"/>
+      <stop offset="45%" stop-color="#ff8a3c" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ff8a3c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCoreGrad" cx="50%" cy="55%" r="50%">
+      <stop offset="0%" stop-color="#ffe9b0" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#ffb054" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ff8a3c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6b6459"/>
+      <stop offset="50%" stop-color="#39332c"/>
+      <stop offset="100%" stop-color="#1c1712"/>
+    </linearGradient>
+    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5a3a20"/>
+      <stop offset="50%" stop-color="#3d2717"/>
+      <stop offset="100%" stop-color="#26160c"/>
+    </linearGradient>
+    <linearGradient id="flameOuterGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#c33a10"/>
+      <stop offset="55%" stop-color="#ff6a1e"/>
+      <stop offset="100%" stop-color="#ffb54a"/>
+    </linearGradient>
+    <linearGradient id="flameMidGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ff8a24"/>
+      <stop offset="100%" stop-color="#ffd25c"/>
+    </linearGradient>
+    <linearGradient id="flameCoreGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ffd25c"/>
+      <stop offset="100%" stop-color="#fff2b0"/>
+    </linearGradient>
+    <radialGradient id="waxRed" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#e2523e"/>
+      <stop offset="55%" stop-color="#b5392b"/>
+      <stop offset="100%" stop-color="#6e1f17"/>
+    </radialGradient>
+    <radialGradient id="waxGreen" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#6f9a68"/>
+      <stop offset="55%" stop-color="#3f6b3c"/>
+      <stop offset="100%" stop-color="#20361f"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="brand">
+      <!-- static version of the hero toaster logo, cards popped -->
+      <svg class="brand-crest" viewBox="10 -12 108 120" aria-hidden="true">
+        <defs>
+          <clipPath id="bcSlotF"><rect x="-20" y="-60" width="160" height="98"/></clipPath>
+          <clipPath id="bcSlotB"><rect x="-20" y="-60" width="160" height="90"/></clipPath>
+        </defs>
+        <path d="M16 90 L16 58 Q16 52.2 20.1 48.1 L40.1 28.1 Q44.2 24 50 24 L100 24 Q114 24 114 38 L114 70 Q114 75.8 109.9 79.9 L89.9 99.9 Q85.8 104 80 104 L30 104 Q16 104 16 90 Z" fill="#150d08" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M20.1 48.1 Q24.2 44 30 44 L80 44 Q94 44 94 58 L94 90 Q94 95.8 89.9 99.9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M90.5 47.5 L109.6 28.4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M48 30 L92 30" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
+        <g clip-path="url(#bcSlotB)">
+          <g transform="rotate(14 68 30)"><rect x="56" y="-2" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+          <g transform="rotate(20 82 28)"><rect x="70" y="-4" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+        </g>
+        <path d="M40 38 L84 38" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
+        <g clip-path="url(#bcSlotF)">
+          <g transform="rotate(8 58 39)"><rect x="46" y="7" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+        </g>
+      </svg>
+      <span class="brand-word">Big n Lizard</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="#games">Games</a>
+      <a href="#news">News</a>
+      <a href="#about">About</a>
+      <a href="mailto:hello@bignlizard.com" class="nav-contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="top" class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-window" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+
+    <div class="hero-content container">
+      <div class="torch torch--left" aria-hidden="true">
+        <svg viewBox="0 0 100 220" class="torch-svg" preserveAspectRatio="xMidYMax meet">
+          <ellipse class="flame-glow flame-glow--wide" cx="50" cy="52" rx="56" ry="70" fill="url(#glowGrad)"/>
+          <ellipse class="flame-glow flame-glow--core" cx="50" cy="60" rx="26" ry="36" fill="url(#glowCoreGrad)"/>
+          <path class="bracket-arm" d="M14,158 Q50,136 86,158 L86,168 Q50,150 14,168 Z" fill="url(#metalGrad)"/>
+          <path d="M14,158 Q50,136 86,158" fill="none" stroke="rgba(255,235,190,0.16)" stroke-width="1.2"/>
+          <path class="bracket-post" d="M42,220 L42,150 Q42,132 58,132 L58,220 Z" fill="url(#metalGrad)"/>
+          <path d="M44.5,218 L44.5,152 Q44.5,140 54,135.5" fill="none" stroke="rgba(255,235,190,0.12)" stroke-width="1.1"/>
+          <circle cx="50" cy="144" r="2" fill="#0f0c09"/>
+          <path class="handle" d="M45.5,96 L44,148 Q44,153 47.5,153 L52.5,153 Q56,153 56,148 L54.5,96 Z" fill="url(#woodGrad)"/>
+          <path d="M48,100 L47.2,150" stroke="rgba(0,0,0,0.32)" stroke-width="0.7" fill="none"/>
+          <path d="M52.4,100 L53,149" stroke="rgba(255,255,255,0.13)" stroke-width="0.6" fill="none"/>
+          <path d="M44.8,96 L55.2,96 L54.8,107 L45.2,107 Z" fill="#6e4a26"/>
+          <path d="M44.9,98.5 L55.1,100.5 M45,102 L55,104" stroke="rgba(20,12,6,0.4)" stroke-width="1.1" fill="none"/>
+          <g class="flame-set">
+            <g class="flame flame-outer"><path d="M50,14 C43,26 33,38 33,56 C33,74 40,86 50,90 C60,86 67,74 67,56 C67,38 57,26 50,14 Z" fill="url(#flameOuterGrad)"/></g>
+            <g class="flame flame-mid"><path d="M50,30 C45,40 39,46 39,58 C39,72 44,80 50,83 C56,80 61,72 61,58 C61,46 55,40 50,30 Z" fill="url(#flameMidGrad)"/></g>
+            <g class="flame flame-core"><path d="M50,46 C46.5,53 43.5,57 43.5,64 C43.5,72 46,77 50,78.5 C54,77 56.5,72 56.5,64 C56.5,57 53.5,53 50,46 Z" fill="url(#flameCoreGrad)"/></g>
+            <ellipse class="flame flame-hot" cx="50" cy="69" rx="4" ry="7" fill="#fff6d8" opacity="0.95"/>
+          </g>
+          <path class="cup" d="M28,98 Q28,72 50,72 Q72,72 72,98 L64,104 Q50,93 36,104 Z" fill="url(#metalGrad)"/>
+          <path d="M30.5,92 Q30.5,75.5 50,74" fill="none" stroke="rgba(255,235,190,0.25)" stroke-width="1.4"/>
+          <circle cx="36" cy="96" r="1.6" fill="#0f0c09"/>
+          <circle cx="64" cy="96" r="1.6" fill="#0f0c09"/>
+          <path class="torch-smoke" d="M50,12 C45,4 55,-2 51,-10" fill="none" stroke="rgba(140,128,116,0.5)" stroke-width="3" stroke-linecap="round"/>
+          <circle class="ember ember-1" cx="44" cy="36" r="1.8" fill="#ffcf7d"/>
+          <circle class="ember ember-2" cx="58" cy="30" r="1.3" fill="#ffcf7d"/>
+          <circle class="ember ember-3" cx="50" cy="18" r="1.4" fill="#ffcf7d"/>
+          <circle class="ember ember-4" cx="62" cy="44" r="1.1" fill="#ffd998"/>
+        </svg>
+      </div>
+
+      <div class="hero-titleblock">
+        <svg class="hero-logo" viewBox="0 -18 132 130" aria-hidden="true">
+          <defs>
+            <!-- Each clip hides everything below its slot's centerline, so items
+                 vanish into the slot as they translate down -->
+            <clipPath id="tlSlotFrontClip">
+              <rect x="-20" y="-60" width="160" height="98"/>
+            </clipPath>
+            <clipPath id="tlSlotBackClip">
+              <rect x="-20" y="-60" width="160" height="90"/>
+            </clipPath>
+          </defs>
+
+          <!-- feet -->
+          <ellipse cx="36" cy="106" rx="6" ry="3.5" fill="#f6ecd4" stroke="#241a10" stroke-width="3"/>
+          <ellipse cx="76" cy="106" rx="6" ry="3.5" fill="#f6ecd4" stroke="#241a10" stroke-width="3"/>
+
+          <!-- body: front face is a rounded rect (x 16-94, y 44-104, r 14),
+               back face is the same rect offset by (+20, -20). The silhouette
+               is their tangent hull: each 45° diagonal leaves a corner arc at
+               its tangent point, so the outline stays smooth all the way round.
+               The interior line is the front face's own edge, running between
+               the two points where it meets the hull. -->
+          <path d="M16 90 L16 58 Q16 52.2 20.1 48.1 L40.1 28.1 Q44.2 24 50 24 L100 24 Q114 24 114 38 L114 70 Q114 75.8 109.9 79.9 L89.9 99.9 Q85.8 104 80 104 L30 104 Q16 104 16 90 Z" fill="#f6ecd4" stroke="#241a10" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M20.1 48.1 Q24.2 44 30 44 L80 44 Q94 44 94 58 L94 90 Q94 95.8 89.9 99.9" fill="none" stroke="#241a10" stroke-width="3" stroke-linecap="round"/>
+          <path d="M90.5 47.5 L109.6 28.4" fill="none" stroke="#241a10" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- back slot and its pop-out items -->
+          <path d="M48 30 L92 30" stroke="#241a10" stroke-width="5.5" stroke-linecap="round"/>
+          <g clip-path="url(#tlSlotBackClip)">
+            <g class="bnl-pop bnl-pop--cards">
+              <g transform="rotate(14 68 30)">
+                <rect x="56" y="-2" width="24" height="32" rx="2.5" fill="#fffdf8" stroke="#241a10" stroke-width="2.5"/>
+              </g>
+              <g transform="rotate(20 82 28)">
+                <rect x="70" y="-4" width="24" height="32" rx="2.5" fill="#fffdf8" stroke="#241a10" stroke-width="2.5"/>
+              </g>
+            </g>
+            <g class="bnl-pop bnl-pop--cd">
+              <g class="bnl-cd-disc">
+                <circle cx="76" cy="16" r="15" fill="#fffdf8" stroke="#241a10" stroke-width="2.5"/>
+                <path d="M76 5.8 A10.2 10.2 0 0 1 85.4 12" fill="none" stroke="#c9b98f" stroke-width="2" stroke-linecap="round"/>
+                <path d="M76 26.2 A10.2 10.2 0 0 1 66.6 20" fill="none" stroke="#c9b98f" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="76" cy="16" r="5.2" fill="none" stroke="#241a10" stroke-width="2"/>
+                <circle cx="76" cy="16" r="2.4" fill="#241a10"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- front slot and its pop-out items -->
+          <path d="M40 38 L84 38" stroke="#241a10" stroke-width="5.5" stroke-linecap="round"/>
+          <g clip-path="url(#tlSlotFrontClip)">
+            <g class="bnl-pop bnl-pop--cards">
+              <g transform="rotate(8 58 39)">
+                <rect x="46" y="7" width="24" height="32" rx="2.5" fill="#fffdf8" stroke="#241a10" stroke-width="2.5"/>
+              </g>
+            </g>
+            <g class="bnl-pop bnl-pop--cd">
+              <g class="bnl-cd-disc">
+                <circle cx="58" cy="24.5" r="15" fill="#fffdf8" stroke="#241a10" stroke-width="2.5"/>
+                <path d="M58 14.3 A10.2 10.2 0 0 1 67.4 20.5" fill="none" stroke="#c9b98f" stroke-width="2" stroke-linecap="round"/>
+                <path d="M58 34.7 A10.2 10.2 0 0 1 48.6 28.5" fill="none" stroke="#c9b98f" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="58" cy="24.5" r="5.2" fill="none" stroke="#241a10" stroke-width="2"/>
+                <circle cx="58" cy="24.5" r="2.4" fill="#241a10"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- lever and browning dial -->
+          <path d="M86 62 L86 82" stroke="#241a10" stroke-width="2.5" stroke-linecap="round"/>
+          <g class="bnl-lever">
+            <rect x="80" y="59" width="12" height="7" rx="3.5" fill="#f6ecd4" stroke="#241a10" stroke-width="2.5"/>
+          </g>
+          <circle cx="86" cy="93" r="5" fill="#f6ecd4" stroke="#241a10" stroke-width="2.5"/>
+          <path d="M86 90 L86 93" stroke="#241a10" stroke-width="2"/>
+        </svg>
+        <h1 class="hero-title">Big n Lizard</h1>
+        <p class="hero-tagline">Awesome board games, brewed in the back room of the tavern.</p>
+        <p class="hero-sub">We're an indie studio making tabletop adventures. Pull up a stool, the ale's on us.</p>
+        <div class="hero-cta">
+          <a href="#games" class="btn btn-primary">See Upcoming Games</a>
+          <a href="#news" class="btn btn-ghost">Tavern Notices</a>
+        </div>
+      </div>
+
+      <div class="torch torch--right" aria-hidden="true">
+        <svg viewBox="0 0 100 220" class="torch-svg" preserveAspectRatio="xMidYMax meet">
+          <ellipse class="flame-glow flame-glow--wide" cx="50" cy="52" rx="56" ry="70" fill="url(#glowGrad)"/>
+          <ellipse class="flame-glow flame-glow--core" cx="50" cy="60" rx="26" ry="36" fill="url(#glowCoreGrad)"/>
+          <path class="bracket-arm" d="M14,158 Q50,136 86,158 L86,168 Q50,150 14,168 Z" fill="url(#metalGrad)"/>
+          <path d="M14,158 Q50,136 86,158" fill="none" stroke="rgba(255,235,190,0.16)" stroke-width="1.2"/>
+          <path class="bracket-post" d="M42,220 L42,150 Q42,132 58,132 L58,220 Z" fill="url(#metalGrad)"/>
+          <path d="M44.5,218 L44.5,152 Q44.5,140 54,135.5" fill="none" stroke="rgba(255,235,190,0.12)" stroke-width="1.1"/>
+          <circle cx="50" cy="144" r="2" fill="#0f0c09"/>
+          <path class="handle" d="M45.5,96 L44,148 Q44,153 47.5,153 L52.5,153 Q56,153 56,148 L54.5,96 Z" fill="url(#woodGrad)"/>
+          <path d="M48,100 L47.2,150" stroke="rgba(0,0,0,0.32)" stroke-width="0.7" fill="none"/>
+          <path d="M52.4,100 L53,149" stroke="rgba(255,255,255,0.13)" stroke-width="0.6" fill="none"/>
+          <path d="M44.8,96 L55.2,96 L54.8,107 L45.2,107 Z" fill="#6e4a26"/>
+          <path d="M44.9,98.5 L55.1,100.5 M45,102 L55,104" stroke="rgba(20,12,6,0.4)" stroke-width="1.1" fill="none"/>
+          <g class="flame-set">
+            <g class="flame flame-outer"><path d="M50,14 C43,26 33,38 33,56 C33,74 40,86 50,90 C60,86 67,74 67,56 C67,38 57,26 50,14 Z" fill="url(#flameOuterGrad)"/></g>
+            <g class="flame flame-mid"><path d="M50,30 C45,40 39,46 39,58 C39,72 44,80 50,83 C56,80 61,72 61,58 C61,46 55,40 50,30 Z" fill="url(#flameMidGrad)"/></g>
+            <g class="flame flame-core"><path d="M50,46 C46.5,53 43.5,57 43.5,64 C43.5,72 46,77 50,78.5 C54,77 56.5,72 56.5,64 C56.5,57 53.5,53 50,46 Z" fill="url(#flameCoreGrad)"/></g>
+            <ellipse class="flame flame-hot" cx="50" cy="69" rx="4" ry="7" fill="#fff6d8" opacity="0.95"/>
+          </g>
+          <path class="cup" d="M28,98 Q28,72 50,72 Q72,72 72,98 L64,104 Q50,93 36,104 Z" fill="url(#metalGrad)"/>
+          <path d="M30.5,92 Q30.5,75.5 50,74" fill="none" stroke="rgba(255,235,190,0.25)" stroke-width="1.4"/>
+          <circle cx="36" cy="96" r="1.6" fill="#0f0c09"/>
+          <circle cx="64" cy="96" r="1.6" fill="#0f0c09"/>
+          <path class="torch-smoke" d="M50,12 C45,4 55,-2 51,-10" fill="none" stroke="rgba(140,128,116,0.5)" stroke-width="3" stroke-linecap="round"/>
+          <circle class="ember ember-1" cx="44" cy="36" r="1.8" fill="#ffcf7d"/>
+          <circle class="ember ember-2" cx="58" cy="30" r="1.3" fill="#ffcf7d"/>
+          <circle class="ember ember-3" cx="50" cy="18" r="1.4" fill="#ffcf7d"/>
+          <circle class="ember ember-4" cx="62" cy="44" r="1.1" fill="#ffd998"/>
+        </svg>
+      </div>
+    </div>
+
+    <a href="#games" class="scroll-cue" aria-label="Scroll to upcoming games">
+      <span></span>
+    </a>
+  </section>
+
+  <section id="games" class="section games-section">
+    <div class="container">
+      <p class="eyebrow">On the Drawing Board</p>
+      <h2 class="section-title">Upcoming Games</h2>
+      <p class="section-lede">Every title we brew starts as a rumor traded over tankards. Here's what's currently bubbling in the back room.</p>
+
+      <button class="d20" id="d20" type="button" aria-label="Roll the d20">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,10 86.4,31 86.4,73 50,94 13.6,73 13.6,31" fill="#b5392b" stroke="#2c1c10" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M50 10 L50 26 M86.4 31 L50 26 M86.4 31 L72 64 M86.4 73 L72 64 M50 94 L72 64 M50 94 L28 64 M13.6 73 L28 64 M13.6 31 L28 64 M13.6 31 L50 26" stroke="rgba(44,28,16,0.5)" stroke-width="2" fill="none"/>
+          <polygon points="50,26 72,64 28,64" fill="#c94b36" stroke="rgba(44,28,16,0.5)" stroke-width="2" stroke-linejoin="round"/>
+          <text class="d20-num" x="50" y="60" text-anchor="middle">20</text>
+        </svg>
+      </button>
+      <span class="sr-only" id="d20-live" aria-live="polite"></span>
+
+      <div class="game-grid">
+
+        <article class="game-card">
+          <span class="game-status status-dev">In Development</span>
+          <div class="game-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><path d="M24 4 L40 14 V34 L24 44 L8 34 V14 Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 14 L32 19 V29 L24 34 L16 29 V19 Z" fill="currentColor" opacity="0.85"/></svg>
+          </div>
+          <h3 class="game-title">Emberhollow Depths</h3>
+          <p class="game-blurb">A cooperative dungeon-crawl for 2&ndash;5 adventurers. Explore the ember-lit ruins beneath the old brewery and bargain with things that shouldn't still be awake.</p>
+          <ul class="game-meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>2&ndash;5 players</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>60&ndash;90 min</li>
+          </ul>
+        </article>
+
+        <article class="game-card">
+          <span class="game-status status-playtest">Playtesting</span>
+          <div class="game-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect x="8" y="10" width="20" height="28" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="20" y="16" width="20" height="28" rx="2" fill="currentColor" opacity="0.85"/></svg>
+          </div>
+          <h3 class="game-title">Tankard &amp; Talon</h3>
+          <p class="game-blurb">A push-your-luck bluffing game where dragons run the tavern and everyone's tab is due at midnight.</p>
+          <ul class="game-meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>3&ndash;6 players</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>30&ndash;45 min</li>
+          </ul>
+        </article>
+
+        <article class="game-card">
+          <span class="game-status status-soon">Coming 2027</span>
+          <div class="game-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><path d="M24 6c8 6 14 6 14 6 0 16-6 26-14 30-8-4-14-14-14-30 0 0 6 0 14-6Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 16v16M17 24h14" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <h3 class="game-title">The Wyrmwood Wager</h3>
+          <p class="game-blurb">A trick-taking card game of debts, dares, and dubious ale, set in the Wyrmwood's rowdiest inn.</p>
+          <ul class="game-meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>2&ndash;4 players</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>20&ndash;30 min</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="news" class="section news-section">
+    <div class="board-bg" aria-hidden="true"></div>
+    <div class="board-vignette" aria-hidden="true"></div>
+
+    <svg class="board-arrow" viewBox="0 0 120 160" aria-hidden="true">
+      <defs>
+        <linearGradient id="arrowShaft" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#4a3220"/>
+          <stop offset="45%" stop-color="#a9784a"/>
+          <stop offset="100%" stop-color="#6b4a2c"/>
+        </linearGradient>
+        <linearGradient id="arrowHead" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8e8ec"/>
+          <stop offset="55%" stop-color="#9a9aa2"/>
+          <stop offset="100%" stop-color="#4a4a52"/>
+        </linearGradient>
+        <filter id="arrowShadowBlur" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.4"/>
+        </filter>
+      </defs>
+
+      <!-- shadow on the planks: pinned at the entry point, widest at the tail,
+           which is what makes the arrow read as sticking out of the wood -->
+      <g filter="url(#arrowShadowBlur)" fill="rgba(0, 0, 0, 0.38)">
+        <path d="M102 48 L29 122 L38 130 L104 53 Z"/>
+        <ellipse cx="34" cy="126" rx="13" ry="6.5" transform="rotate(-45 34 126)"/>
+      </g>
+
+      <g transform="rotate(52 60 80)">
+        <!-- splintered entry slit; the head is buried in the plank -->
+        <path d="M53 23 Q46 18 42 17" stroke="#0e0905" stroke-width="1.6" fill="none" opacity="0.8"/>
+        <path d="M67 24 Q73 21 78 21" stroke="#0e0905" stroke-width="1.4" fill="none" opacity="0.7"/>
+        <path d="M64 22 Q66 15 70 12" stroke="#0e0905" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <ellipse cx="60" cy="24" rx="7.5" ry="3" fill="#0e0905"/>
+        <path d="M52.5 24.5 L46 27.5 L54 27.8 Z" fill="#7c5a34"/>
+        <path d="M67.5 23.5 L73.5 26 L66.5 27 Z" fill="#7c5a34"/>
+
+        <!-- last sliver of the head before it vanishes into the wood -->
+        <path d="M56 24 L64 24 L62.5 28.5 L57.5 28.5 Z" fill="url(#arrowHead)"/>
+
+        <path d="M56.8 27 L63.2 27 L61.6 122 L58.4 122 Z" fill="url(#arrowShaft)" stroke="#2c1c10" stroke-width="1"/>
+        <path d="M58.6 30 L57.8 120" stroke="rgba(0,0,0,0.3)" stroke-width="0.7" fill="none"/>
+
+        <!-- wrap, fletching, nock -->
+        <path d="M57.6 100 L62.4 100 L62.2 104.5 L57.8 104.5 Z" fill="#8f2a1e"/>
+        <path d="M58 101.2 L62.2 102 M57.9 103 L62.1 103.6" stroke="rgba(0,0,0,0.4)" stroke-width="0.8"/>
+        <path d="M58.2 106 L44 128 L52 126 L58.9 112 Z" fill="#b5392b"/>
+        <path d="M61.8 106 L76 128 L68 126 L61.1 112 Z" fill="#8f2a1e"/>
+        <path d="M55.8 111 L50 119 M54.2 114 L49 121.5" stroke="rgba(0,0,0,0.25)" stroke-width="0.8"/>
+        <path d="M64.2 111 L70 119" stroke="rgba(0,0,0,0.3)" stroke-width="0.8"/>
+        <path d="M58.4 122 L61.6 122 L62 130 Q60 132 58 130 Z" fill="#4a3220" stroke="#2c1c10" stroke-width="0.8"/>
+      </g>
+    </svg>
+
+    <div class="board-note" aria-hidden="true">
+      <span class="board-note-pin"></span>
+      Hugh wuz here
+    </div>
+
+    <div class="container">
+      <div class="board-sign-wrap">
+        <div class="board-sign">
+          <span class="board-sign-bolt board-sign-bolt--left"></span>
+          <p class="eyebrow">Word Around the Tavern</p>
+          <h2 class="section-title">Company News &amp; Events</h2>
+          <span class="board-sign-bolt board-sign-bolt--right"></span>
+        </div>
+      </div>
+      <p class="section-lede">Where to find us, what we're announcing, and what's fresh off the drawing table.</p>
+
+      <ul class="news-list">
+
+        <li class="news-item news-item--decree">
+          <span class="news-pin" aria-hidden="true"></span>
+          <div class="note-paper">
+            <span class="note-frame" aria-hidden="true"></span>
+            <svg class="note-flourish" viewBox="0 0 60 20" aria-hidden="true">
+              <path d="M30 3 C34 8 39 9 30 15 C21 9 26 8 30 3 Z" fill="none" stroke="#d8a13a" stroke-width="1.3"/>
+              <circle cx="30" cy="9" r="1.6" fill="#d8a13a"/>
+              <path d="M2 9.5 H23 M37 9.5 H58" fill="none" stroke="#d8a13a" stroke-width="1.3"/>
+            </svg>
+            <span class="news-date">Aug 1&ndash;4, 2026</span>
+            <div class="news-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3v18M6 3h11l-2 3.5L17 10H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="news-title">We'll Be at Gen Con 2026</h3>
+            <p class="news-body">Find us at Booth&nbsp;#2214 in the Indie Game Hall in Indianapolis for hands-on demos of <em>Emberhollow Depths</em> and a first look at <em>Tankard &amp; Talon</em>.</p>
+            <span class="news-tag">Event</span>
+            <svg class="note-seal" viewBox="0 0 44 44" aria-hidden="true">
+              <path d="M22,2 C30,1 36,6 38,14 C41,21 37,29 31,34 C25,39 16,39 10,34 C4,29 1,21 3,14 C5,6 12,1 22,2 Z" fill="url(#waxRed)"/>
+              <circle cx="22" cy="20" r="11" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+              <path d="M22,12 L26,19 L34,20 L28,25 L30,33 L22,28 L14,33 L16,25 L10,20 L18,19 Z" fill="rgba(255,255,255,0.32)"/>
+            </svg>
+          </div>
+        </li>
+
+        <li class="news-item news-item--scrawl">
+          <span class="news-pin" aria-hidden="true"></span>
+          <div class="note-paper">
+            <span class="note-inkblot" aria-hidden="true"></span>
+            <span class="news-date">Nov 20&ndash;22, 2026</span>
+            <div class="news-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3v18M6 3h11l-2 3.5L17 10H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="news-title">Catch Us at PAX Unplugged</h3>
+            <p class="news-body">Big n Lizard returns to PAX Unplugged in Philadelphia with an expanded demo lineup and playtest slots. Bring your dice hand.</p>
+            <span class="news-tag">Event</span>
+          </div>
+        </li>
+
+        <li class="news-item news-item--ledger">
+          <span class="news-pin" aria-hidden="true"></span>
+          <span class="note-ribbon" aria-hidden="true"></span>
+          <div class="note-paper">
+            <span class="news-date">June 2026</span>
+            <div class="news-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 9h16M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="news-title">Tankard &amp; Talon Enters Playtesting</h3>
+            <p class="news-body">Our second title is officially in blind playtesting. Catch our next convention appearance to pull up a stool and try it yourself.</p>
+            <span class="news-tag">Announcement</span>
+            <svg class="note-seal note-seal--sm" viewBox="0 0 44 44" aria-hidden="true">
+              <path d="M22,2 C30,1 36,6 38,14 C41,21 37,29 31,34 C25,39 16,39 10,34 C4,29 1,21 3,14 C5,6 12,1 22,2 Z" fill="url(#waxGreen)"/>
+              <circle cx="22" cy="20" r="11" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+              <path d="M22,12 L26,19 L34,20 L28,25 L30,33 L22,28 L14,33 L16,25 L10,20 L18,19 Z" fill="rgba(255,255,255,0.28)"/>
+            </svg>
+          </div>
+        </li>
+
+        <li class="news-item news-item--parchment">
+          <span class="news-pin" aria-hidden="true"></span>
+          <div class="note-paper">
+            <span class="news-date">March 2026</span>
+            <div class="news-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="news-title">Kickstarter Date Set for Emberhollow Depths</h3>
+            <p class="news-body">Mark your calendars. Our debut campaign launches this spring. Follow us to get notified the moment it goes live.</p>
+            <span class="news-tag">Announcement</span>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <section id="about" class="section about-section">
+    <div class="container about-inner">
+      <div class="about-text">
+        <p class="eyebrow">The Tavern Keepers</p>
+        <h2 class="section-title">About Big n Lizard</h2>
+        <p>Big n Lizard is a small, independent board game studio. We design tabletop games with hand-drawn art, warm storytelling, and just enough chaos to make game night memorable. No investors, no committees. Just a table, some dice, and too many index cards.</p>
+        <p>Want to playtest, collaborate, or just say hello?</p>
+        <a href="mailto:hello@bignlizard.com" class="btn btn-primary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a href="#top" class="brand brand--footer">
+      <!-- static version of the hero toaster logo, cards popped -->
+      <svg class="brand-crest" viewBox="10 -12 108 120" aria-hidden="true">
+        <defs>
+          <clipPath id="bfSlotF"><rect x="-20" y="-60" width="160" height="98"/></clipPath>
+          <clipPath id="bfSlotB"><rect x="-20" y="-60" width="160" height="90"/></clipPath>
+        </defs>
+        <path d="M16 90 L16 58 Q16 52.2 20.1 48.1 L40.1 28.1 Q44.2 24 50 24 L100 24 Q114 24 114 38 L114 70 Q114 75.8 109.9 79.9 L89.9 99.9 Q85.8 104 80 104 L30 104 Q16 104 16 90 Z" fill="#150d08" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
+        <path d="M20.1 48.1 Q24.2 44 30 44 L80 44 Q94 44 94 58 L94 90 Q94 95.8 89.9 99.9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M90.5 47.5 L109.6 28.4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <path d="M48 30 L92 30" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
+        <g clip-path="url(#bfSlotB)">
+          <g transform="rotate(14 68 30)"><rect x="56" y="-2" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+          <g transform="rotate(20 82 28)"><rect x="70" y="-4" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+        </g>
+        <path d="M40 38 L84 38" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
+        <g clip-path="url(#bfSlotF)">
+          <g transform="rotate(8 58 39)"><rect x="46" y="7" width="24" height="32" rx="3" fill="#150d08" stroke="currentColor" stroke-width="4"/></g>
+        </g>
+      </svg>
+      <span class="brand-word">Big n Lizard</span>
+    </a>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#games">Games</a>
+      <a href="#news">News</a>
+      <a href="#about">About</a>
+      <a href="mailto:hello@bignlizard.com">Contact</a>
+    </nav>
+
+    <div class="footer-social" aria-label="Social links">
+      <a href="#" aria-label="Big n Lizard on Instagram">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg>
+      </a>
+      <a href="#" aria-label="Big n Lizard on BoardGameGeek">
+        <svg viewBox="0 0 24 24"><path d="M12 3 3 8v8l9 5 9-5V8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+      <a href="#" aria-label="Big n Lizard on Discord">
+        <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="12" r="1.4" fill="currentColor"/><circle cx="15" cy="12" r="1.4" fill="currentColor"/></svg>
+      </a>
+    </div>
+
+    <p class="footer-copy">&copy; <span id="year">2026</span> Big n Lizard. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
