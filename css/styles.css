@@ -576,8 +576,22 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   .game-box-wrap {
     margin: 0 auto var(--space-2);
     --box-w: clamp(140px, 46vw, 190px);
+    perspective: none;
   }
   .game-card { width: 100%; }
+  /* flatten the 3D box to just its front face: fewer composited layers
+     (preserve-3d forces one per face) and no infinite tilt animation
+     running underneath the fold on a phone */
+  .game-box {
+    animation: none;
+    transform: none;
+    transform-style: flat;
+  }
+  .box-top, .box-spine, .box-bottom { display: none; }
+  .box-front {
+    transform: none;
+    box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.45), 0 10px 18px rgba(44,28,16,0.3);
+  }
 }
 
 .scroll-cue {
@@ -799,7 +813,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 
 .game-box {
-  --box-depth: 24px;
+  --box-depth: clamp(38px, calc(var(--box-w) * 0.22), 56px);
   position: relative;
   width: 100%;
   height: 100%;
@@ -810,11 +824,15 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 .game-row:nth-child(2) .game-box { animation-delay: -2.1s; }
 .game-row:nth-child(3) .game-box { animation-delay: -4.3s; }
 
+/* Resting tilt viewed mostly front-on and slightly from below (positive
+   rotateX tips the top face away, out of view) with a modest turn to the
+   right (rotateY) so the spine reads as a side edge, not a top-down lid.
+   The keyframes only add a gentle sway on top of that base pose. */
 @keyframes box-tilt {
-  0%, 100% { transform: rotateY(-6deg) rotateX(1deg); }
-  30%      { transform: rotateY(4deg)  rotateX(-1deg); }
-  60%      { transform: rotateY(-3deg) rotateX(1.5deg); }
-  80%      { transform: rotateY(5deg)  rotateX(-0.5deg); }
+  0%, 100% { transform: rotateX(14deg) rotateY(-20deg); }
+  30%      { transform: rotateX(11deg) rotateY(-17deg); }
+  60%      { transform: rotateX(17deg) rotateY(-23deg); }
+  80%      { transform: rotateX(12deg) rotateY(-18deg); }
 }
 
 .box-face {
@@ -831,19 +849,28 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18), 0 10px 22px rgba(44,28,16,0.35);
+  box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.45), 0 18px 30px rgba(44,28,16,0.4);
 }
 .box-top {
   top: 0; left: 0; right: 0;
   height: var(--box-depth);
   background: var(--box-tint-light);
   transform: rotateX(90deg) translateZ(calc(var(--box-depth) / 2));
+  box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.4);
 }
 .box-spine {
   top: 0; bottom: 0; right: 0;
   width: var(--box-depth);
   background: var(--box-tint-dark);
   transform: rotateY(90deg) translateZ(calc(var(--box-depth) / 2));
+  box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.4);
+}
+.box-bottom {
+  bottom: 0; left: 0; right: 0;
+  height: var(--box-depth);
+  background: var(--box-tint-dark);
+  transform: rotateX(-90deg) translateZ(calc(var(--box-depth) / 2));
+  box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.4);
 }
 
 .box-icon {
@@ -874,7 +901,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 @media (prefers-reduced-motion: reduce) {
   .game-box {
     animation: none !important;
-    transform: rotateY(-8deg) rotateX(2deg);
+    transform: rotateX(14deg) rotateY(-20deg);
   }
 }
 
@@ -907,6 +934,24 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   border: 1px solid var(--color-border-dark);
   border-radius: calc(var(--radius-md) - 4px);
   pointer-events: none;
+}
+
+/* Stretched link: makes the whole card clickable without wrapping its
+   (heading + paragraph + list) content in an <a>, which browsers render
+   as a single flat interactive blob and screen readers announce as one
+   long link label. */
+.game-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.game-card:has(.game-card-link) {
+  cursor: pointer;
+}
+.game-card-link:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
 }
 
 /* .game-row goes column-direction below 720px (see above), which turns the
@@ -1139,6 +1184,18 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   clip-path: polygon(1% 4%, 9% 0.5%, 19% 3%, 29% 0.2%, 40% 3.5%, 53% 0.5%, 64% 3%, 76% 0.8%, 88% 3.2%, 97% 0.5%, 100% 7%, 96% 16%, 100% 27%, 94% 37%, 99% 48%, 95% 59%, 100% 71%, 93% 82%, 98% 93%, 100% 99%, 89% 96%, 78% 100%, 67% 95%, 55% 100%, 44% 96%, 33% 100%, 22% 95%, 11% 100%, 2% 96%, 0% 87%, 4% 76%, 0% 65%, 5% 54%, 1% 43%, 6% 32%, 0% 21%, 4% 11%);
 }
 
+/* Stretched link: makes a whole note clickable without wrapping its
+   heading/paragraph in an <a> (see .game-card-link for the same reasoning). */
+.note-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.note-link:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
+}
+
 /* --- Variant: royal decree (ivory, gold trim, wax seal) --- */
 .news-item--decree .note-paper {
   background:
@@ -1330,7 +1387,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 
 .footer-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: var(--space-4);
 }
@@ -1347,28 +1404,66 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 .footer-nav a:hover { color: var(--color-gold-bright); }
 
-.footer-social {
-  display: flex;
-  gap: var(--space-3);
-  justify-self: end;
-}
-.footer-social a {
-  width: 40px;
-  height: 40px;
+/* --- Built by Bee & Gold badge: idle bee mark that swaps for a
+   sparkle-trimmed credit line on hover/focus (no separate social presence
+   yet, so this replaces the old social-icon row). --- */
+.footer-bee { justify-self: end; }
+.bee-badge {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border-dark);
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   color: var(--color-parchment-dim);
-  transition: color var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+  text-decoration: none;
 }
-.footer-social a:hover {
-  color: var(--color-gold-bright);
-  border-color: var(--color-gold);
-  transform: translateY(-2px);
+.bee-badge-logo {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
 }
-.footer-social svg { width: 20px; height: 20px; }
+.bee-badge-tip {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(4px, -50%);
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--color-parchment-dim);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease 0.1s, opacity 0.3s ease 0.1s;
+}
+.bee-badge-tip-name { position: relative; color: var(--color-gold-bright); font-weight: 600; margin-left: 3px; }
+.bee-badge-spark {
+  position: absolute;
+  font-size: 0.55rem;
+  line-height: 1;
+  color: var(--color-gold);
+  opacity: 0;
+}
+.bee-badge-spark-1 { top: -9px; left: -10px; animation-delay: 0s; }
+.bee-badge-spark-2 { top: -11px; right: 6px; animation-delay: 0.45s; }
+.bee-badge-spark-3 { bottom: -9px; right: -8px; animation-delay: 0.9s; }
+.bee-badge-spark-4 { bottom: -7px; left: 10px; animation-delay: 0.25s; }
+@keyframes bee-badge-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(90deg); }
+}
+@media (hover: hover) {
+  .bee-badge:hover .bee-badge-logo,
+  .bee-badge:focus-visible .bee-badge-logo { transform: scale(0); opacity: 0; }
+  .bee-badge:hover .bee-badge-tip,
+  .bee-badge:focus-visible .bee-badge-tip { transform: translate(0, -50%); opacity: 1; }
+  .bee-badge:hover .bee-badge-spark,
+  .bee-badge:focus-visible .bee-badge-spark { animation: bee-badge-twinkle 1.4s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bee-badge-logo, .bee-badge-tip { transition: none; }
+  .bee-badge-spark { animation: none !important; }
+}
 
 .footer-copy {
   grid-column: 1 / -1;
@@ -1385,5 +1480,5 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
     justify-items: center;
     text-align: center;
   }
-  .footer-social { justify-self: center; }
+  .footer-bee { justify-self: center; }
 }
