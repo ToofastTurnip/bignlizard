@@ -1,6 +1,69 @@
 (function () {
   "use strict";
 
+  // Shared across every animated/game-like feature below: skip motion, and
+  // provide instant/static fallbacks, when the user has asked for less of it.
+  var stillPlease = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Shared confetti burst, fired from an origin element's bounding rect.
+  // Used by the d20 crit and the torch-flare catch.
+  var confettiBurst = function (originEl) {
+    var rect = originEl.getBoundingClientRect();
+    var ox = rect.left + rect.width / 2;
+    var oy = rect.top + rect.height / 2;
+    var dpr = window.devicePixelRatio || 1;
+    var canvas = document.createElement("canvas");
+    canvas.className = "confetti-canvas";
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    var colors = ["#f0c464", "#e2523e", "#6f9a68", "#f5ead1", "#d8a13a"];
+    var bits = [];
+    for (var i = 0; i < 160; i++) {
+      var ang = Math.random() * Math.PI * 2;
+      var speed = 7 + Math.random() * 13;
+      bits.push({
+        x: ox,
+        y: oy,
+        vx: Math.cos(ang) * speed,
+        vy: Math.sin(ang) * speed - 7,
+        w: 5 + Math.random() * 6,
+        h: 8 + Math.random() * 8,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        color: colors[i % colors.length]
+      });
+    }
+    var start = performance.now();
+    var frame = function (now) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      var alive = false;
+      bits.forEach(function (p) {
+        p.vy += 0.32;
+        p.vx *= 0.99;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        if (p.y < window.innerHeight + 40) alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        var flutter = 0.4 + 0.6 * Math.abs(Math.sin((now - start) / 130 + p.rot));
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * flutter);
+        ctx.restore();
+      });
+      if (alive && now - start < 4000) {
+        requestAnimationFrame(frame);
+      } else {
+        canvas.remove();
+      }
+    };
+    requestAnimationFrame(frame);
+  };
+
   // Mobile nav toggle
   var toggle = document.getElementById("navToggle");
   var nav = document.getElementById("site-nav");
@@ -25,6 +88,19 @@
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
   }
+
+  // Tab-away title: nudge people back when they wander off
+  var homeTitle = document.title;
+  var awayTitles = [
+    "Are you gonna finish this beer?",
+    "You come back or Hugh kill you!",
+    "Lizard Man is judging your absence."
+  ];
+  document.addEventListener("visibilitychange", function () {
+    document.title = document.hidden
+      ? awayTitles[Math.floor(Math.random() * awayTitles.length)]
+      : homeTitle;
+  });
 
   // Scroll-reveal for cards (progressive enhancement; content is visible without JS/if IO unsupported)
   var revealTargets = document.querySelectorAll(".game-row, .news-item, .about-text");
@@ -64,7 +140,6 @@
     var d20Svg = d20.querySelector("svg");
     var d20Num = d20.querySelector(".d20-num");
     var d20Live = document.getElementById("d20-live");
-    var stillPlease = window.matchMedia("(prefers-reduced-motion: reduce)");
     var d20X = 0;
     var d20Y = 0;
     var d20Busy = false;
@@ -77,63 +152,6 @@
       d20Num.textContent = String(n);
     };
 
-    var confettiBurst = function () {
-      var rect = d20.getBoundingClientRect();
-      var ox = rect.left + rect.width / 2;
-      var oy = rect.top + rect.height / 2;
-      var dpr = window.devicePixelRatio || 1;
-      var canvas = document.createElement("canvas");
-      canvas.className = "confetti-canvas";
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      document.body.appendChild(canvas);
-      var ctx = canvas.getContext("2d");
-      ctx.scale(dpr, dpr);
-      var colors = ["#f0c464", "#e2523e", "#6f9a68", "#f5ead1", "#d8a13a"];
-      var bits = [];
-      for (var i = 0; i < 160; i++) {
-        var ang = Math.random() * Math.PI * 2;
-        var speed = 7 + Math.random() * 13;
-        bits.push({
-          x: ox,
-          y: oy,
-          vx: Math.cos(ang) * speed,
-          vy: Math.sin(ang) * speed - 7,
-          w: 5 + Math.random() * 6,
-          h: 8 + Math.random() * 8,
-          rot: Math.random() * Math.PI,
-          vr: (Math.random() - 0.5) * 0.3,
-          color: colors[i % colors.length]
-        });
-      }
-      var start = performance.now();
-      var frame = function (now) {
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        var alive = false;
-        bits.forEach(function (p) {
-          p.vy += 0.32;
-          p.vx *= 0.99;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rot += p.vr;
-          if (p.y < window.innerHeight + 40) alive = true;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.fillStyle = p.color;
-          var flutter = 0.4 + 0.6 * Math.abs(Math.sin((now - start) / 130 + p.rot));
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * flutter);
-          ctx.restore();
-        });
-        if (alive && now - start < 4000) {
-          requestAnimationFrame(frame);
-        } else {
-          canvas.remove();
-        }
-      };
-      requestAnimationFrame(frame);
-    };
-
     var d20Land = function (n) {
       d20Face(n);
       if (d20Live) {
@@ -144,7 +162,7 @@
         setTimeout(function () {
           d20.classList.remove("is-crit");
         }, 1600);
-        if (!stillPlease.matches) confettiBurst();
+        if (!stillPlease.matches) confettiBurst(d20);
       }
       d20Busy = false;
     };
@@ -274,7 +292,7 @@
     };
     hughNote.addEventListener("click", function () {
       if (rumbleTimer) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (stillPlease.matches) return;
       document.body.classList.add("is-rumbling");
       // animationend is the real cleanup; the timer is a fallback in case
       // the animation never runs (e.g. display:none mid-rumble)
@@ -283,6 +301,113 @@
     document.addEventListener("animationend", function (e) {
       if (e.animationName === "tavern-rumble" && rumbleTimer) endRumble();
     });
+  }
+
+  // Hidden easter egg: crack the wax seal beside "Get in Touch" for a fortune
+  var fortuneSeal = document.getElementById("fortuneSeal");
+  var fortuneScrap = document.getElementById("fortuneScrap");
+  var fortuneLive = document.getElementById("fortune-live");
+  if (fortuneSeal && fortuneScrap) {
+    var fortunes = [
+      "The next round's on the house. (Terms, conditions, and the house do not exist.)",
+      "You will roll exactly what you need. Eventually. Maybe next campaign.",
+      "A stranger at the bar owes you a favor. Collect wisely.",
+      "Tonight's stew is best not investigated too closely.",
+      "The dice remember every insult you've ever hurled at them.",
+      "Fortune favors the bold. Also the mildly stubborn.",
+      "Someone at this table is bluffing. Statistically, it's you.",
+      "No lizards were harmed in the making of this fortune. Several tankards were."
+    ];
+    var fortuneHideTimer = null;
+    var lastFortune = -1;
+
+    fortuneSeal.addEventListener("click", function () {
+      clearTimeout(fortuneHideTimer);
+
+      var idx;
+      do {
+        idx = Math.floor(Math.random() * fortunes.length);
+      } while (fortunes.length > 1 && idx === lastFortune);
+      lastFortune = idx;
+
+      fortuneScrap.textContent = fortunes[idx];
+      fortuneScrap.classList.add("is-open");
+      if (fortuneLive) fortuneLive.textContent = "Fortune: " + fortunes[idx];
+
+      if (!stillPlease.matches) {
+        fortuneSeal.classList.remove("is-cracking");
+        void fortuneSeal.offsetWidth; // restart the keyframe on rapid re-clicks
+        fortuneSeal.classList.add("is-cracking");
+      }
+
+      fortuneHideTimer = setTimeout(function () {
+        fortuneScrap.classList.remove("is-open");
+      }, 6000);
+    });
+    fortuneSeal.addEventListener("animationend", function (e) {
+      if (e.animationName === "seal-crack") fortuneSeal.classList.remove("is-cracking");
+    });
+  }
+
+  // Hidden easter egg: torches rarely flare; catching one with a well-timed
+  // click/tap/Enter is a "critical hit". No visible hint while idle.
+  var torches = document.querySelectorAll(".torch");
+  if (torches.length) {
+    var torchLive = document.getElementById("torch-live");
+    var activeTorch = null;
+
+    var catchFlare = function (torch) {
+      if (torch !== activeTorch) {
+        if (torchLive) torchLive.textContent = "Nothing happens. Yet.";
+        return;
+      }
+      activeTorch = null;
+      torch.classList.remove("is-flaring");
+      torch.classList.add("is-caught");
+      if (torchLive) torchLive.textContent = "The flame roars up around your touch — a flicker of luck!";
+      confettiBurst(torch);
+    };
+
+    torches.forEach(function (torch) {
+      torch.addEventListener("click", function () {
+        catchFlare(torch);
+      });
+      torch.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          catchFlare(torch);
+        }
+      });
+      torch.addEventListener("animationend", function (e) {
+        if (e.animationName === "torch-catch-flash") torch.classList.remove("is-caught");
+      });
+    });
+
+    var scheduleFlare = function () {
+      setTimeout(function () {
+        if (stillPlease.matches) {
+          scheduleFlare();
+          return;
+        }
+        var torch = torches[Math.floor(Math.random() * torches.length)];
+        // torches are display:none under ~720px; skip flaring one nobody can see
+        if (torch.offsetParent === null) {
+          scheduleFlare();
+          return;
+        }
+        activeTorch = torch;
+        torch.classList.add("is-flaring");
+        setTimeout(function () {
+          if (activeTorch === torch) {
+            activeTorch = null;
+            torch.classList.remove("is-flaring");
+          }
+          scheduleFlare();
+        }, 900);
+      }, 40000 + Math.random() * 50000);
+    };
+
+    if (!stillPlease.matches) scheduleFlare();
   }
 
   // Time-of-day hero lighting: window light by day, orange and lower in the

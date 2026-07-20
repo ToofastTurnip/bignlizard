@@ -129,6 +129,19 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   height: 76px;
 }
 
+/* Anchor-scroll targets: without this, native hash-navigation scrolls each
+   section flush to the viewport top, and the sticky header (77px: 76px
+   header-inner + 1px border) then overlaps and hides the first ~77px of
+   whatever it lands on. scroll-margin-top makes the browser stop short by
+   that same amount so the section renders fully visible below the header. */
+#top,
+#games,
+#news,
+#about,
+#main {
+  scroll-margin-top: 77px;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -455,8 +468,23 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   flex-shrink: 0;
   align-self: flex-end;
   margin-bottom: clamp(10px, 4vw, 40px);
+  cursor: pointer;
+  transition: filter 300ms ease-out;
 }
 .torch-svg { width: 100%; height: auto; overflow: visible; }
+
+/* Hidden easter egg: torches rarely flare; catching the flare with a
+   well-timed click/tap/Enter is a "critical hit". No visible hint at rest. */
+.torch.is-flaring {
+  filter: brightness(1.55) drop-shadow(0 0 20px rgba(255, 180, 80, 0.85));
+}
+@keyframes torch-catch-flash {
+  0% { filter: brightness(2.2) drop-shadow(0 0 34px rgba(255, 210, 140, 1)); }
+  100% { filter: brightness(1) drop-shadow(0 0 0 rgba(255, 180, 80, 0)); }
+}
+.torch.is-caught {
+  animation: torch-catch-flash 700ms ease-out;
+}
 
 .flame-glow {
   transform-box: fill-box;
@@ -626,6 +654,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
    ========================================================================== */
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -637,23 +666,84 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   transition: transform var(--duration-fast) var(--ease-out), background var(--duration-base), box-shadow var(--duration-base), color var(--duration-base);
   min-height: 44px;
 }
+
+/* two embers per button, drifting up out of the top edge on hover */
+.btn::before,
+.btn::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-gold-bright);
+  box-shadow: 0 0 6px 1px rgba(240, 196, 100, 0.85);
+  opacity: 0;
+  pointer-events: none;
+}
+.btn::before { left: 24%; }
+.btn::after { left: 70%; }
+.btn:hover::before { animation: btn-ember-rise 1.3s ease-in infinite; }
+.btn:hover::after { animation: btn-ember-rise 1.5s ease-in infinite; animation-delay: 0.45s; }
+@keyframes btn-ember-rise {
+  0% { transform: translate(0, 0) scale(0.85); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(3px, -22px) scale(0.35); opacity: 0; }
+}
+
 .btn-primary {
   background: linear-gradient(180deg, var(--color-ember) 0%, var(--color-ember-dark) 100%);
   color: var(--color-paper);
   box-shadow: 0 4px 14px rgba(181, 57, 43, 0.35);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(181, 57, 43, 0.45); }
-.btn-primary:active { transform: translateY(0); }
-
-.btn-ghost {
-  border: 1px solid var(--color-gold);
-  background: rgba(15, 12, 9, 0.45);
-  color: var(--color-gold-bright);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.75);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+.btn-primary:hover {
+  transform: translateY(-2px);
+  animation: btn-primary-glow 1.6s ease-in-out infinite;
 }
-.btn-ghost:hover { background: rgba(216, 161, 58, 0.18); border-color: var(--color-gold-bright); transform: translateY(-2px); }
-.btn-ghost:active { transform: translateY(0); }
+.btn-primary:active { transform: translateY(0); }
+@keyframes btn-primary-glow {
+  0%, 100% { box-shadow: 0 8px 20px rgba(181, 57, 43, 0.45), 0 0 0 rgba(240, 196, 100, 0); }
+  50% { box-shadow: 0 8px 24px rgba(181, 57, 43, 0.6), 0 0 18px rgba(240, 196, 100, 0.4); }
+}
+
+/* Secondary hero CTA: a scrap of parchment pinned to the wall, matching
+   the .board-note motif in the news section, rather than a second button. */
+.hero-note {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 14px 28px;
+  margin: 0 6px;
+  background: linear-gradient(160deg, #efe2bd, #ddc898);
+  clip-path: polygon(3% 18%, 18% 2%, 45% 8%, 72% 1%, 97% 12%, 100% 55%, 97% 88%, 78% 100%, 50% 92%, 22% 100%, 2% 85%);
+  font-family: var(--font-scrawl);
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #3a2b16;
+  transform: rotate(-3deg);
+  filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.45));
+  transition: transform var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out);
+}
+.hero-note:hover,
+.hero-note:focus-visible {
+  transform: rotate(0deg) translateY(-3px);
+  filter: drop-shadow(2px 7px 8px rgba(0,0,0,0.55));
+}
+.hero-note:active { transform: rotate(-1deg) translateY(0); }
+.hero-note-pin {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(9deg);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #b5392b, #7e2a20 70%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
 
 /* ==========================================================================
    Sections (shared)
@@ -1140,7 +1230,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 .board-note-pin {
   position: absolute;
-  top: -6px;
+  top: 4px;
   left: 50%;
   transform: translateX(-50%) rotate(9deg);
   width: 11px;
@@ -1374,6 +1464,75 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 .about-section .eyebrow { color: var(--color-gold-bright); }
 .about-section .section-title { color: var(--color-parchment); }
 .about-text p { color: var(--color-parchment-dim); font-size: 1.1rem; }
+
+/* --- Hidden easter egg: a small wax seal beside "Get in Touch" that cracks
+   open to reveal a random tavern fortune. No visible label on purpose. --- */
+.fortune-seal {
+  position: relative;
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  margin-left: var(--space-3);
+  vertical-align: middle;
+  border-radius: 50%;
+  padding: 0;
+}
+.fortune-seal-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.45));
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.fortune-seal:hover .fortune-seal-svg,
+.fortune-seal:focus-visible .fortune-seal-svg {
+  transform: scale(1.08) rotate(-4deg);
+}
+@keyframes seal-crack {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.15) rotate(-6deg); }
+  55% { transform: scale(0.85) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.fortune-seal.is-cracking .fortune-seal-svg {
+  animation: seal-crack 420ms ease-in-out;
+}
+
+.about-text .fortune-scrap {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  z-index: 5;
+  width: max-content;
+  max-width: 240px;
+  margin: 0;
+  background: linear-gradient(160deg, #efe2bd, #ddc898);
+  clip-path: polygon(4% 12%, 40% 0%, 78% 8%, 100% 2%, 96% 48%, 100% 88%, 62% 100%, 22% 94%, 0% 100%, 6% 60%);
+  padding: 10px 16px 14px;
+  font-family: var(--font-scrawl);
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  color: #3a2b16;
+  text-align: center;
+  filter: drop-shadow(2px 5px 4px rgba(0, 0, 0, 0.45));
+  transform: translateY(-50%) rotate(-4deg) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+}
+.fortune-scrap.is-open {
+  opacity: 1;
+  transform: translateY(-50%) rotate(-4deg) scale(1);
+}
+@media (max-width: 720px) {
+  .fortune-scrap {
+    left: 50%;
+    top: calc(100% + 14px);
+    transform: translateX(-50%) rotate(-4deg) scale(0.85);
+  }
+  .fortune-scrap.is-open { transform: translateX(-50%) rotate(-4deg) scale(1); }
+}
 
 /* ==========================================================================
    Footer
