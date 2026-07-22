@@ -1588,7 +1588,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   top: 50%;
   transform: translate(4px, -50%);
   white-space: nowrap;
-  font-family: var(--font-heading);
+  font-family: "Playfair Display", serif;
   font-size: 0.72rem;
   color: var(--color-parchment-dim);
   opacity: 0;
