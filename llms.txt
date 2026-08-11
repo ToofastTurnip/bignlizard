@@ -1,0 +1,24 @@
+# Big N Lizard
+
+> Big N Lizard is a small, independent tabletop board game studio. We design games with hand-drawn art, warm storytelling, and just enough chaos to make game night memorable — no investors, no committees.
+
+Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming games, company news/events, and how to get in touch. Content sections are anchors on the homepage.
+
+## Games
+
+- [Pantheon Loreholders](https://bignlizard.com/#games): A deck-building card game where players assemble pantheons of gods and battle for supremacy, with strategic combat inspired by Magic: The Gathering. 2–4 players, 15–30 min. Status: Playtesting. Playable demo: https://huggingface.co/spaces/toofastturnip/pantheon
+- [Elephants Dancing](https://bignlizard.com/#games): A chaotic party game where players attend concerts at a music festival to achieve enlightenment. 2–6 players, 20–60 min. Status: In development.
+- [Pantheon Mobile](https://bignlizard.com/#games): A mobile adaptation of Pantheon Loreholders. 2–4 players, 15–30 min. Status: Coming 2028.
+
+## News & Events
+
+- [Company News & Events](https://bignlizard.com/#news): Announcements including the Pantheon Loreholders demo launch, playtesting sessions at conventions (e.g. No Land Beyond), and an open call for contributing artists.
+
+## About
+
+- [About Big N Lizard](https://bignlizard.com/#about): Studio background and mission.
+- Contact: mitch@bignlizard.com
+
+## Optional
+
+- [Sitemap](https://bignlizard.com/sitemap.xml)
