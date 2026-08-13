@@ -319,7 +319,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   --wl-b: rgba(255, 118, 38, 0.12);
 }
 
-/* Night: no daylight left — kill the window, dim the wall, and let the
+/* Night: no daylight left, kill the window, dim the wall, and let the
    torches carry the scene */
 .hero--night .hero-window { opacity: 0; }
 .hero--night .hero-bg {
@@ -798,7 +798,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 /* --- d20 easter egg ---
    Rolls in when the section scrolls into view; a click launches it in a
    random direction and rerolls it. All flight paths are computed in JS
-   (see main.js) — CSS only handles the resting look. */
+   (see main.js); CSS only handles the resting look. */
 .d20 {
   position: absolute;
   top: clamp(76px, 11vw, 118px);
@@ -1532,6 +1532,36 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
     transform: translateX(-50%) rotate(-4deg) scale(0.85);
   }
   .fortune-scrap.is-open { transform: translateX(-50%) rotate(-4deg) scale(1); }
+}
+
+/* ==========================================================================
+   Privacy page
+   ========================================================================== */
+
+.privacy-seal {
+  width: 52px;
+  height: 52px;
+  margin: 0 0 var(--space-3);
+  transform: rotate(-6deg);
+  filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.45));
+}
+
+.privacy-body h2 {
+  font-size: 1.3rem;
+  color: var(--color-gold-bright);
+  margin: var(--space-6) 0 var(--space-2);
+}
+.privacy-body h2:first-child { margin-top: 0; }
+
+.privacy-body a { color: var(--color-gold-bright); text-decoration: underline; text-underline-offset: 2px; }
+.privacy-body a:hover { color: var(--color-parchment); }
+
+.privacy-updated {
+  margin-top: var(--space-5);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
 }
 
 /* ==========================================================================

@@ -1,6 +1,6 @@
 # Big N Lizard
 
-> Big N Lizard is a small, independent tabletop board game studio. We design games with hand-drawn art, warm storytelling, and just enough chaos to make game night memorable — no investors, no committees.
+> Big N Lizard is a small, independent tabletop board game studio. We design games with hand-drawn art, warm storytelling, and just enough chaos to make game night memorable. No investors, no committees.
 
 Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming games, company news/events, and how to get in touch. Content sections are anchors on the homepage.
 
@@ -21,4 +21,5 @@ Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming g
 
 ## Optional
 
+- [Privacy Policy](https://bignlizard.com/privacy.html): The site collects no personal data; notes aggregate visit counts via Cloudflare and use of Google Search Console.
 - [Sitemap](https://bignlizard.com/sitemap.xml)

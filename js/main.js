@@ -155,7 +155,7 @@
     var d20Land = function (n) {
       d20Face(n);
       if (d20Live) {
-        d20Live.textContent = "Rolled a " + n + (n === 20 ? " — critical hit!" : "");
+        d20Live.textContent = "Rolled a " + n + (n === 20 ? ", critical hit!" : "");
       }
       if (n === 20) {
         d20.classList.add("is-crit");
@@ -281,7 +281,7 @@
     }
   }
 
-  // "Hugh wuz here" — clicking the note rattles the whole tavern
+  // "Hugh wuz here": clicking the note rattles the whole tavern
   var hughNote = document.querySelector(".board-note");
   if (hughNote) {
     var rumbleTimer = null;
@@ -364,7 +364,7 @@
       activeTorch = null;
       torch.classList.remove("is-flaring");
       torch.classList.add("is-caught");
-      if (torchLive) torchLive.textContent = "The flame roars up around your touch — a flicker of luck!";
+      if (torchLive) torchLive.textContent = "The flame roars up around your touch, a flicker of luck!";
       confettiBurst(torch);
     };
 
