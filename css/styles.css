@@ -403,6 +403,17 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   animation: bnl-logo-shake 9s infinite;
 }
 
+/* Static cards-popped toaster: hidden on desktop, swapped in for the
+   animated SVG on phones (see .hero-logo below) so mobile always shows
+   the "cards sticking out" state instead of the plain unanimated toaster. */
+.hero-logo-mobile {
+  display: none;
+  width: 122px;
+  height: auto;
+  margin: 0 auto var(--space-3);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+}
+
 /* Base transforms keep the items retracted below the slot clip lines
    when animations are off (reduced motion). */
 .bnl-pop--cards { animation: bnl-cards-pop 9s infinite; transform: translateY(42px); }
@@ -619,6 +630,9 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   .hero-content { flex-direction: column; gap: var(--space-4); }
   /* no torches on phones: fewer animated layers to composite and paint */
   .torch { display: none; }
+  /* swap the animated toaster SVG for the static cards-popped PNG */
+  .hero-logo { display: none; }
+  .hero-logo-mobile { display: block; }
   /* hero-fx.js already skips its own init below this breakpoint; this is
      just belt-and-suspenders in case the viewport crosses it after load */
   .hero-fx-canvas { display: none; }
