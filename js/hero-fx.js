@@ -6,9 +6,7 @@
 // keyboard hitbox) whether or not this file runs at all. We only hide the
 // SVG's visuals, and only after WebGL has actually started rendering their
 // replacement.
-import * as THREE from "./vendor/three.module.min.js";
-
-(function () {
+(async function () {
   var MOBILE_BREAKPOINT = 720; // matches the .torch { display: none } breakpoint in styles.css
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -20,6 +18,11 @@ import * as THREE from "./vendor/three.module.min.js";
   var torchLeftSvg = torchLeftEl && torchLeftEl.querySelector(".torch-svg");
   var torchRightSvg = torchRightEl && torchRightEl.querySelector(".torch-svg");
   if (!hero || !torchLeftSvg || !torchRightSvg) return;
+
+  // Deferred until we know we'll actually use it: this is a ~670KB/~165KB
+  // gzipped library, not worth fetching for visitors the checks above
+  // already ruled out (mobile, reduced-motion, or an unsupported browser).
+  var THREE = await import("./vendor/three.module.min.js");
 
   var canvas = document.createElement("canvas");
   canvas.className = "hero-fx-canvas";
