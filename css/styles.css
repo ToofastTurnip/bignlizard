@@ -341,6 +341,27 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%);
 }
 
+/* --- WebGL layer (js/hero-fx.js): flowing banners + torch flame particles ---
+   Positioned (not z-indexed) so it paints above the static, non-positioned
+   .hero-content by normal stacking rules, no explicit z-index tug-of-war
+   needed. Purely decorative and never intercepts input. */
+.hero-fx-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Only swapped in once hero-fx.js has WebGL actually up and rendering, so
+   there's never a gap where neither the SVG torch nor its replacement
+   shows. The .torch container itself (and its click/keyboard "catch the
+   flare" hitbox) is untouched — only its drawn contents are hidden. */
+.hero--fx .torch-svg {
+  opacity: 0 !important;
+}
+
 .hero-content {
   display: flex;
   align-items: center;
@@ -352,8 +373,22 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 
 .hero-titleblock {
+  position: relative;
   text-align: center;
   max-width: 620px;
+}
+
+/* Soft dark scrim behind the title/tagline/sub, independent of the
+   edge-only .hero-vignette — the stone wall's lit patch sits right behind
+   this text, so without it the tagline and sub-line wash out. */
+.hero-titleblock::before {
+  content: "";
+  position: absolute;
+  inset: -4% -25% -8%;
+  background: radial-gradient(ellipse 68% 72% at 50% 55%, rgba(8, 6, 4, 0.6) 0%, rgba(8, 6, 4, 0.38) 45%, transparent 80%);
+  filter: blur(6px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* --- Animated toaster logo ---
@@ -440,14 +475,15 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   font-family: var(--font-heading);
   font-size: clamp(1.05rem, 2vw, 1.3rem);
   color: var(--color-parchment);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.75), 0 1px 12px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.85), 0 1px 14px rgba(0,0,0,0.6);
   margin-bottom: var(--space-2);
 }
 
 .hero-sub {
-  color: var(--color-parchment-dim);
+  color: var(--color-parchment);
+  font-weight: 600;
   font-size: 1.05rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.75), 0 1px 12px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.85), 0 1px 14px rgba(0,0,0,0.6);
   max-width: 46ch;
   margin-left: auto;
   margin-right: auto;
@@ -583,6 +619,9 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   .hero-content { flex-direction: column; gap: var(--space-4); }
   /* no torches on phones: fewer animated layers to composite and paint */
   .torch { display: none; }
+  /* hero-fx.js already skips its own init below this breakpoint; this is
+     just belt-and-suspenders in case the viewport crosses it after load */
+  .hero-fx-canvas { display: none; }
   /* skip the priciest paint work on small screens */
   .site-header { backdrop-filter: none; background: rgba(21, 13, 8, 0.97); }
   .hero-bg { animation: none; }
@@ -1323,6 +1362,46 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   clip-path: polygon(0% 4%, 4% 0%, 96% 0%, 100% 4%, 100% 94%, 96% 100%, 4% 100%, 0% 94%);
 }
 .news-item--ledger .news-title { color: #33453f; }
+
+/* --- Variant: legendary relic (crisp parchment, red-and-gold invitation trim) --- */
+.news-item--relic .note-paper {
+  background:
+    radial-gradient(ellipse 55% 32% at 22% 18%, rgba(181, 57, 43, 0.12), transparent),
+    radial-gradient(ellipse 42% 28% at 80% 82%, rgba(216, 161, 58, 0.18), transparent),
+    linear-gradient(165deg, #fbf2dd 0%, #f2e0b6 55%, #e7cd98 100%);
+  background-blend-mode: multiply, multiply, normal;
+  /* No torn-paper clip-path here (unlike the other variants) — a royal
+     invitation gets clean edges so the double frame below isn't cut up. */
+  clip-path: none;
+  border-radius: 3px;
+  /* Centered, not left-aligned like the other notes — reads more like a
+     formal invitation. */
+  text-align: center;
+}
+.news-item--relic .news-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+.news-item--relic .note-frame {
+  border: 2px solid var(--color-ember);
+  box-shadow:
+    inset 0 0 0 3px rgba(181, 57, 43, 0.3),
+    inset 0 0 0 5px var(--color-gold-bright),
+    inset 0 0 0 7px rgba(216, 161, 58, 0.45);
+}
+.news-item--relic .news-date,
+.news-item--relic .news-title { color: var(--color-ember-dark); }
+.news-item--relic .news-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+.news-item--relic .news-icon { color: var(--color-ember); }
+.news-item--relic .news-tag {
+  border-color: var(--color-ember);
+  color: var(--color-ember-dark);
+}
+
 .news-list li:nth-child(4n+1) { --tilt: -2.4deg; }
 .news-list li:nth-child(4n+2) { --tilt: 1.8deg; }
 .news-list li:nth-child(4n+3) { --tilt: -1.2deg; }

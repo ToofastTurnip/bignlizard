@@ -24,7 +24,7 @@ Everything is placeholder copy for the client to swap in real content:
 
 ## Preview locally
 
-No install needed. Just serve the folder (opening `index.html` directly also works, but a local server avoids any browser file:// quirks):
+No install needed, but you do need to serve the folder rather than double-clicking `index.html` — `js/hero-fx.js` (the hero's WebGL banners/torch flames) is loaded as an ES module so it can `import` three.js, and browsers block ES module imports from `file://` URLs:
 
 ```bash
 python3 -m http.server 8000
