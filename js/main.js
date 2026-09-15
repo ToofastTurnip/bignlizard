@@ -103,7 +103,7 @@
   });
 
   // Scroll-reveal for cards (progressive enhancement; content is visible without JS/if IO unsupported)
-  var revealTargets = document.querySelectorAll(".game-row, .news-item, .about-text");
+  var revealTargets = document.querySelectorAll(".game-row, .about-text");
   revealTargets.forEach(function (el) {
     el.classList.add("reveal");
   });
@@ -424,11 +424,21 @@
     setInterval(updateHeroDaypart, 60 * 1000);
   }
 
-  // Sticky header shadow on scroll
+  // Sticky header shadow on scroll. The shadow itself lives in CSS
+  // (.site-header.is-scrolled); this only flips the class, and only when the
+  // state actually changes -- writing to the header's style on every scroll
+  // tick re-rasterizes its compositing layer (and its backdrop-filter
+  // snapshot) dozens of times a second for no reason.
   var header = document.getElementById("site-header");
   if (header) {
+    var scrolled = null;
     var onScroll = function () {
-      header.style.boxShadow = window.scrollY > 8 ? "0 8px 20px rgba(0,0,0,0.35)" : "none";
+      // Split on/off thresholds so trackpad micro-scrolls and momentum
+      // settling near the boundary can't strobe the shadow on and off.
+      var next = scrolled ? window.scrollY > 4 : window.scrollY > 12;
+      if (next === scrolled) return;
+      scrolled = next;
+      header.classList.toggle("is-scrolled", next);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

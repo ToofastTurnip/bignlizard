@@ -112,14 +112,20 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
    Header
    ========================================================================== */
 
+/* No backdrop-filter here by design: the header sits over the hero's
+   WebGL canvas, which repaints every frame, so a backdrop blur has to
+   re-snapshot a moving layer and intermittently composites a stale frame
+   -- visible as a flash. A near-opaque background gets the same separation
+   for free. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(21, 13, 8, 0.92);
+  background: rgba(21, 13, 8, 0.97);
   border-bottom: 1px solid var(--color-border-dark);
-  backdrop-filter: blur(6px);
 }
+
+.site-header.is-scrolled { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); }
 
 .header-inner {
   display: flex;
@@ -636,8 +642,6 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   /* hero-fx.js already skips its own init below this breakpoint; this is
      just belt-and-suspenders in case the viewport crosses it after load */
   .hero-fx-canvas { display: none; }
-  /* skip the priciest paint work on small screens */
-  .site-header { backdrop-filter: none; background: rgba(21, 13, 8, 0.97); }
   .hero-bg { animation: none; }
   /* below-the-fold sections render lazily as they approach the viewport */
   .news-section, .about-section, .site-footer {
@@ -1424,14 +1428,6 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   transform: rotate(0deg) translateY(-4px) scale(1.015);
   filter: drop-shadow(6px 16px 10px rgba(0,0,0,0.45));
 }
-/* .reveal / .is-visible (shared scroll-reveal utility) would otherwise win on
-   specificity and strip the tilt transform back to none once visible. */
-.news-item.reveal { transform: translateY(18px) rotate(var(--tilt, -1.5deg)); }
-.news-item.reveal.is-visible { transform: rotate(var(--tilt, -1.5deg)); }
-.news-item.reveal.is-visible:hover {
-  transform: rotate(0deg) translateY(-4px) scale(1.015);
-}
-
 .news-pin {
   position: absolute;
   top: 6px;
