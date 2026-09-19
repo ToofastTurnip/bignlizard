@@ -378,6 +378,21 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   padding-bottom: var(--space-6);
 }
 
+/* The WebGL banners (js/hero-fx.js) hang down the hero's outer edges, and
+   they're sized off the hero's HEIGHT — so on a tall, narrow viewport (an
+   iPad in portrait) they grow wide enough to swallow the torches standing
+   beside them. Reserve a gutter roughly 12vw deep, measured from the
+   viewport edge, so the torches always sit inboard of the banner strip;
+   layoutBanners() then fits each banner to whatever gutter this leaves it.
+   Wide viewports already give the container side margins deeper than that,
+   and subtracting them keeps the desktop layout untouched — and keeps the
+   gutter continuous across the width where the two cross over. */
+.hero-content {
+  --hero-gutter: max(0px, (100vw - var(--container-width)) / 2);
+  padding-left: max(var(--space-4), 12vw - var(--hero-gutter));
+  padding-right: max(var(--space-4), 12vw - var(--hero-gutter));
+}
+
 .hero-titleblock {
   position: relative;
   text-align: center;
@@ -633,7 +648,13 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 
 @media (max-width: 720px) {
-  .hero-content { flex-direction: column; gap: var(--space-4); }
+  .hero-content {
+    flex-direction: column;
+    gap: var(--space-4);
+    /* no torches and no WebGL banners down here, so no gutter to reserve */
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
   /* no torches on phones: fewer animated layers to composite and paint */
   .torch { display: none; }
   /* swap the animated toaster SVG for the static cards-popped PNG */
