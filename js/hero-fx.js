@@ -210,19 +210,52 @@
   var bannerRight = makeBanner(bannerTextureRight);
   scene.add(bannerLeft, bannerRight);
 
+  var BANNER_TORCH_GAP = 14; // px of bare wall left between banner and torch
+  var BANNER_BLEED = 1.45;   // how far past the hero's edge a banner may hang
+
+  // Width of the wall strip outboard of a torch, i.e. how much room that
+  // banner actually has. Read off the live layout so it tracks the hero's
+  // responsive padding rather than assuming a breakpoint.
+  function bannerStrip(torchEl, heroRect) {
+    var r = torchEl.getBoundingClientRect();
+    var strip = torchEl === torchLeftEl
+      ? r.left - heroRect.left
+      : heroRect.right - r.right;
+    return Math.max(40, strip - BANNER_TORCH_GAP);
+  }
+
   function layoutBanners() {
     // Scale the whole banner (geometry + its wave amplitude, which is
     // authored in local units) up from its BANNER_H design size so it runs
     // from the very top of the hero to just above the bottom, whatever the
-    // hero's actual height is.
+    // hero's actual height is...
     var topMargin = 0;
     var bottomMargin = Math.max(16, heroH * 0.05);
-    var scale = (heroH - topMargin - bottomMargin) / BANNER_H;
+    var heightScale = (heroH - topMargin - bottomMargin) / BANNER_H;
+    // ...but cap that by the strip of wall the banner has to itself. Without
+    // it, a tall narrow viewport (an iPad in portrait) scales the banner up
+    // until it covers the torch beside it and the tagline behind it.
+    var heroRect = hero.getBoundingClientRect();
     var topY = cssToWorldY(topMargin);
-    bannerLeft.scale.setScalar(scale);
-    bannerRight.scale.setScalar(scale);
-    bannerLeft.position.set(heroW * 0.08, topY, -40);
-    bannerRight.position.set(heroW * 0.92, topY, -40);
+    var sides = [[bannerLeft, torchLeftEl, 1], [bannerRight, torchRightEl, -1]];
+
+    for (var i = 0; i < sides.length; i++) {
+      var mesh = sides[i][0];
+      var strip = bannerStrip(sides[i][1], heroRect);
+      var scale = Math.min(heightScale, (strip * BANNER_BLEED) / BANNER_W);
+      var halfW = (BANNER_W * scale) / 2;
+      // Inner edge, as a distance from the hero's own edge: the design
+      // position (8% / 92% of the hero width) while there's room for it,
+      // otherwise pushed outward until it clears the torch — the overhang
+      // past the hero's edge is clipped by .hero's overflow: hidden.
+      var inner = Math.min(strip, heroW * 0.08 + halfW);
+      mesh.scale.setScalar(scale);
+      mesh.position.set(
+        sides[i][2] > 0 ? inner - halfW : heroW - inner + halfW,
+        topY,
+        -40
+      );
+    }
   }
 
   function updateBanner(mesh, t) {
@@ -548,6 +581,15 @@
       layoutBanners();
     }, 120);
   });
+
+  // The torches' positions depend on the titleblock's width, so a webfont
+  // swapping in after first layout moves the strip the banners are fitted to.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      resize();
+      layoutBanners();
+    });
+  }
 
   // requestAnimationFrame is already throttled by the browser while the tab
   // is in the background, so the only case worth handling ourselves is
