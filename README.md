@@ -6,6 +6,8 @@ Static marketing site for Big n Lizard, an indie fantasy board game company. Pla
 
 ```
 index.html       All page markup (hero, upcoming games, news/events, about, footer)
+404.html         "Ye Wandered Off the Map" page, served for any missing URL (wrangler.toml)
+card.html        Landing page for the business-card QR code (bignlizard.com/card)
 css/styles.css   All styling (design tokens at the top of the file)
 js/main.js       Mobile nav toggle, scroll-reveal, footer year, header scroll shadow
 assets/          favicon, hero stone-wall background texture
