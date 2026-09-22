@@ -131,48 +131,102 @@
         </svg>
       </div>
       <div class="hero-titleblock">
-        <!-- torn map scrap: the trail leaves the tavern and walks straight
-             off the torn edge onto the wall, where "you are here" -->
         <svg class="lost-map" viewBox="0 0 340 200" aria-hidden="true">
+          <!-- torn scrap of the homebrew setting's world map: a ship's route
+               leaves Silver Harbor and sails straight off the torn edge onto
+               the wall, where "you are here" -->
           <defs>
             <clipPath id="lostMapPaper">
               <polygon points="14,18 60,10 110,16 160,8 205,14 248,10 238,34 250,58 236,84 248,110 238,136 250,162 244,188 200,184 150,192 100,186 50,192 12,186 18,140 10,96 16,56"/>
             </clipPath>
+            <linearGradient id="lostSea" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#5f7b70"/>
+              <stop offset="55%" stop-color="#546a74"/>
+              <stop offset="100%" stop-color="#5d6c5c"/>
+            </linearGradient>
+            <radialGradient id="lostDeep"><stop offset="0%" stop-color="#1c2831" stop-opacity="0.85"/><stop offset="100%" stop-color="#1c2831" stop-opacity="0"/></radialGradient>
+            <radialGradient id="lostBoil"><stop offset="0%" stop-color="#b07638" stop-opacity="0.75"/><stop offset="100%" stop-color="#b07638" stop-opacity="0"/></radialGradient>
+            <radialGradient id="lostHaze"><stop offset="0%" stop-color="#848a55" stop-opacity="0.6"/><stop offset="100%" stop-color="#848a55" stop-opacity="0"/></radialGradient>
+            <filter id="lostShallows" x="-20%" y="-20%" width="140%" height="140%">
+              <feMorphology operator="dilate" radius="1.4"/>
+              <feGaussianBlur stdDeviation="2.2"/>
+            </filter>
+            <!-- mottled print grain, like the original's painted texture -->
+            <filter id="lostGrain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.28" numOctaves="3" seed="4"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0 0.04  0 0 0 1.5 -0.5"/>
+              <feComposite in2="SourceAlpha" operator="in"/>
+            </filter>
+            <g id="lostLand">
+              <path d="M29.2 24.1 L35.8 23.0 L43.3 22.5 L49.9 22.9 L54.2 23.8 L57.6 25.2 L62.6 26.4 L64.8 25.1 L67.9 23.3 L71.8 22.9 L74.7 23.7 L77.2 22.8 L81.0 23.5 L87.3 24.7 L93.4 24.1 L99.4 24.6 L99.5 24.6 L98.5 25.8 L97.1 26.9 L91.1 27.2 L86.0 29.4 L81.0 29.8 L78.1 31.5 L76.6 32.6 L74.1 34.4 L73.4 35.5 L71.7 37.7 L71.8 40.2 L70.6 41.2 L68.4 42.6 L67.2 43.6 L65.2 43.6 L63.9 44.7 L61.4 44.8 L60.2 43.7 L59.9 43.1 L59.1 41.3 L57.2 40.2 L55.4 39.1 L52.2 39.0 L49.8 39.8 L47.0 39.7 L45.3 40.2 L43.5 42.0 L43.9 43.3 L42.5 44.8 L43.3 47.5 L43.2 51.1 L43.0 54.0 L42.8 56.9 L42.9 60.9 L41.9 63.1 L42.8 66.5 L43.0 69.6 L44.8 72.3 L45.6 75.5 L46.5 76.6 L46.5 79.2 L47.8 81.9 L48.7 83.8 L51.1 86.2 L52.0 87.8 L53.3 91.2 L55.7 93.0 L54.6 94.1 L54.7 96.8 L54.5 97.7 L52.2 96.8 L51.5 96.8 L49.9 95.4 L49.3 94.9 L47.2 92.9 L46.5 91.9 L45.5 93.0 L45.8 92.0 L44.2 93.0 L44.0 94.1 L44.5 96.1 L45.3 97.7 L44.7 98.6 L42.9 100.2 L43.0 101.7 L40.9 102.0 L40.0 102.4 L37.3 102.2 L35.4 100.9 L33.8 98.4 L31.5 97.7 L31.1 95.1 L29.9 92.1 L28.1 88.5 L26.7 84.4 L25.1 81.0 L24.6 77.0 L22.7 73.1 L21.8 70.2 L21.2 67.8 L19.9 64.6 L18.4 62.5 L18.3 60.9 L18.2 57.5 L18.6 55.4 L20.0 51.6 L21.4 48.0 L21.9 45.2 L23.5 42.5 L23.8 39.1 L25.3 38.0 L25.2 34.4 L26.1 32.5 L26.4 29.9 L28.1 28.6 L28.2 26.7 L29.4 25.0 Z"/>
+              <path d="M209.8 19.4 L210.6 19.7 L212.9 18.2 L214.4 18.3 L214.1 20.7 L213.6 25.1 L213.2 27.5 L215.7 28.5 L216.7 28.8 L219.0 29.8 L221.2 30.2 L224.4 30.2 L227.0 29.8 L226.0 33.2 L225.9 38.1 L224.7 41.3 L226.4 43.6 L227.5 45.5 L228.2 47.0 L228.6 50.9 L229.5 54.1 L230.5 58.6 L230.2 60.9 L230.9 64.2 L231.6 66.6 L224.2 66.5 L216.1 67.3 L207.5 66.6 L207.7 65.3 L206.3 63.9 L206.3 63.1 L208.6 61.2 L211.9 60.6 L214.4 58.6 L215.6 54.7 L216.1 51.3 L216.7 47.0 L215.3 44.6 L215.7 42.1 L214.4 39.0 L213.2 37.8 L210.9 37.1 L209.8 35.5 L209.9 33.7 L211.2 30.8 L210.9 28.6 L210.0 27.7 L209.7 25.1 L208.6 24.1 L208.5 22.0 L210.0 21.4 Z"/>
+              <path d="M67.7 54.5 L67.9 56.6 L65.6 57.9 L63.0 57.1 L61.9 55.4 L61.6 53.6 L63.5 52.6 L65.3 52.5 L68.1 52.3 Z"/>
+              <path d="M60.9 49.9 L60.6 50.5 L59.9 51.0 L59.1 50.7 L58.4 50.3 L58.4 49.6 L59.2 49.2 L59.9 49.1 L60.5 49.4 Z"/>
+              <path d="M67.8 70.6 L67.7 72.2 L66.8 72.6 L65.9 72.5 L65.5 71.3 L65.0 69.7 L66.0 68.8 L66.8 68.4 L67.7 69.1 Z"/>
+              <path d="M55.9 73.5 L55.4 74.1 L54.8 74.7 L53.9 74.4 L53.4 73.9 L53.4 73.1 L54.1 72.8 L54.7 72.5 L55.3 72.9 Z"/>
+              <path d="M58.2 76.0 L58.3 76.6 L57.6 76.7 L56.9 76.7 L56.3 76.3 L56.4 75.7 L56.9 75.4 L57.6 75.2 L58.2 75.5 Z"/>
+              <path d="M52.6 101.7 L51.6 102.6 L50.8 103.5 L49.7 103.1 L49.0 102.2 L48.5 101.0 L49.6 100.1 L50.8 99.8 L52.1 100.3 Z"/>
+              <path d="M58.2 104.5 L57.4 105.6 L56.5 106.2 L55.4 105.9 L54.7 105.1 L54.6 103.9 L55.5 103.2 L56.5 102.9 L57.5 103.5 Z"/>
+              <path d="M60.2 110.3 L59.9 111.2 L59.3 111.8 L58.6 111.6 L58.4 110.7 L58.2 109.9 L58.6 109.0 L59.3 108.8 L59.7 109.6 Z"/>
+              <path d="M54.0 108.6 L54.0 109.1 L53.5 109.2 L53.0 109.2 L52.8 108.8 L52.6 108.3 L52.9 107.8 L53.5 107.6 L53.9 108.1 Z"/>
+              <path d="M47.5 105.7 L47.2 106.3 L46.6 106.4 L45.9 106.5 L45.4 106.0 L45.7 105.5 L45.9 104.8 L46.6 104.9 L47.2 105.2 Z"/>
+              <path d="M34.8 109.2 L34.4 110.9 L33.4 111.0 L32.6 111.1 L32.1 109.9 L32.2 108.4 L32.7 107.5 L33.4 107.1 L34.3 107.5 Z"/>
+              <path d="M35.8 120.7 L35.8 121.5 L34.7 121.9 L33.7 121.5 L32.8 121.0 L32.6 120.2 L33.5 119.5 L34.6 119.7 L36.2 119.6 Z"/>
+              <path d="M107.8 81.0 L107.6 81.9 L107.0 81.9 L106.5 81.9 L106.3 81.3 L106.0 80.5 L106.5 80.1 L107.0 80.1 L107.4 80.3 Z"/>
+              <path d="M105.2 83.9 L104.9 84.4 L104.1 84.5 L103.5 84.4 L102.8 84.2 L103.0 83.6 L103.4 83.1 L104.1 83.2 L104.6 83.4 Z"/>
+              <path d="M108.0 85.2 L107.6 85.9 L107.0 86.0 L106.2 86.3 L105.8 85.6 L105.7 84.8 L106.4 84.5 L107.1 84.0 L107.5 84.7 Z"/>
+              <path d="M106.9 88.5 L106.5 89.1 L105.9 89.4 L105.2 89.4 L104.5 88.9 L104.8 88.1 L105.3 87.7 L105.9 87.4 L106.4 87.9 Z"/>
+              <path d="M151.8 86.2 L151.6 87.3 L150.8 87.7 L149.9 87.7 L149.2 86.8 L149.2 85.5 L149.6 84.1 L150.8 84.3 L151.8 84.8 Z"/>
+              <path d="M108.0 123.5 L107.7 124.3 L106.5 124.5 L105.4 124.5 L104.8 123.9 L104.1 123.0 L105.2 122.4 L106.6 122.5 L107.8 122.7 Z"/>
+              <path d="M88.7 122.4 L87.7 123.6 L87.0 125.0 L85.9 124.3 L85.2 123.2 L85.0 121.5 L86.0 120.5 L87.0 120.1 L88.1 120.8 Z"/>
+              <path d="M153.4 123.0 L152.4 124.3 L151.5 125.6 L150.1 125.1 L149.3 123.8 L149.5 122.2 L150.3 121.1 L151.4 121.2 L152.3 121.7 Z"/>
+              <path d="M107.1 136.2 L107.2 137.0 L106.4 137.2 L105.8 137.0 L105.5 136.5 L105.1 135.7 L105.7 135.0 L106.5 134.9 L107.0 135.5 Z"/>
+              <path d="M116.0 143.7 L115.3 145.9 L113.3 147.4 L111.0 146.5 L109.0 145.0 L109.4 142.5 L110.2 139.5 L113.4 138.9 L115.7 141.1 Z"/>
+              <path d="M114.2 151.7 L114.3 152.4 L113.4 152.5 L112.6 152.4 L112.4 151.9 L112.2 151.4 L112.6 150.9 L113.4 150.8 L113.9 151.2 Z"/>
+              <path d="M145.3 152.3 L144.8 152.7 L144.4 153.1 L143.8 152.9 L143.3 152.6 L143.5 152.0 L143.8 151.7 L144.4 151.5 L144.9 151.8 Z"/>
+              <path d="M148.4 155.2 L148.1 155.7 L147.3 156.2 L146.4 156.0 L145.8 155.5 L145.7 154.8 L146.5 154.4 L147.3 154.3 L148.3 154.4 Z"/>
+              <path d="M149.6 162.1 L149.7 164.7 L147.2 165.9 L145.1 164.5 L142.5 163.5 L142.4 160.5 L144.6 158.7 L147.2 158.0 L149.8 159.3 Z"/>
+              <path d="M222.1 122.4 L221.8 125.4 L218.7 126.9 L214.8 127.0 L212.2 124.2 L212.2 120.5 L215.1 118.2 L218.9 117.0 L222.2 119.1 Z"/>
+              <path d="M214.2 113.8 L213.8 114.2 L213.3 114.4 L212.8 114.3 L212.4 114.0 L212.5 113.5 L212.7 112.9 L213.4 112.9 L214.0 113.2 Z"/>
+              <path d="M229.6 114.3 L229.1 115.1 L227.9 115.3 L226.9 115.0 L225.6 114.7 L225.7 113.9 L226.7 113.4 L227.9 113.3 L229.1 113.6 Z"/>
+              <path d="M207.4 74.7 L207.5 77.5 L206.5 78.0 L205.8 77.3 L205.2 75.8 L204.9 73.2 L205.7 71.8 L206.6 70.3 L207.6 71.5 Z"/>
+              <path d="M208.7 81.5 L208.4 82.2 L207.7 82.6 L206.8 82.5 L206.1 82.0 L206.2 81.2 L206.8 80.6 L207.6 80.7 L208.3 81.0 Z"/>
+              <path d="M203.6 82.1 L203.6 82.7 L203.0 82.8 L202.5 82.8 L202.3 82.3 L202.3 81.9 L202.5 81.5 L203.0 81.3 L203.6 81.6 Z"/>
+              <path d="M217.6 85.0 L217.2 85.5 L216.8 85.9 L216.3 85.8 L215.9 85.3 L216.1 84.7 L216.2 84.0 L216.8 84.2 L217.4 84.3 Z"/>
+              <path d="M224.1 78.1 L223.2 79.0 L222.7 79.9 L221.6 79.9 L220.8 78.9 L221.2 77.5 L221.8 76.7 L222.6 76.6 L223.7 76.7 Z"/>
+              <path d="M201.3 87.9 L201.2 88.5 L200.7 88.6 L200.2 88.7 L199.6 88.3 L200.0 87.6 L200.1 87.0 L200.7 87.0 L201.3 87.2 Z"/>
+              <path d="M227.9 68.9 L227.6 69.3 L227.2 69.9 L226.6 69.6 L226.4 69.1 L226.5 68.7 L226.6 68.2 L227.2 68.1 L227.6 68.4 Z"/>
+              <path d="M204.7 19.7 L204.6 20.3 L204.2 20.6 L203.6 20.7 L203.5 19.9 L203.2 19.3 L203.6 18.6 L204.1 18.9 L204.8 18.9 Z"/>
+              <path d="M34.1 174.1 L32.6 180.5 L26.5 181.4 L21.4 180.8 L18.0 176.8 L15.7 170.6 L21.0 166.6 L26.5 166.5 L31.1 169.0 Z"/>
+            </g>
           </defs>
 
-          <!-- off-map stretch of the trail, drawn first so the paper covers it -->
-          <path class="lost-trail lost-trail--wall" d="M60 146 C90 140 100 152 120 128 S150 96 180 110 S215 130 232 96 S262 64 290 72"/>
-
-          <polygon points="14,18 60,10 110,16 160,8 205,14 248,10 238,34 250,58 236,84 248,110 238,136 250,162 244,188 200,184 150,192 100,186 50,192 12,186 18,140 10,96 16,56" fill="#e9dab0" stroke="rgba(58,43,22,0.35)" stroke-width="1"/>
-
+          <!-- cream margin, then the sea torn right along with it -->
+          <polygon points="14,18 60,10 110,16 160,8 205,14 248,10 238,34 250,58 236,84 248,110 238,136 250,162 244,188 200,184 150,192 100,186 50,192 12,186 18,140 10,96 16,56" fill="#efe2bd" stroke="rgba(58,43,22,0.35)" stroke-width="1"/>
           <g clip-path="url(#lostMapPaper)">
-            <!-- age stains -->
-            <ellipse cx="190" cy="160" rx="60" ry="30" fill="rgba(120,92,52,0.14)"/>
-            <ellipse cx="60" cy="40" rx="50" ry="26" fill="rgba(120,92,52,0.1)"/>
+            <rect x="16" y="16" width="240" height="167" fill="url(#lostSea)"/>
+            <ellipse cx="129" cy="93" rx="46" ry="38" fill="url(#lostDeep)"/>
+            <ellipse cx="127" cy="152" rx="52" ry="34" fill="url(#lostBoil)"/>
+            <ellipse cx="208" cy="146" rx="48" ry="38" fill="url(#lostHaze)"/>
+            <use href="#lostLand" fill="#c9dccf" opacity="0.45" filter="url(#lostShallows)"/>
+            <use href="#lostLand" fill="#a08e4a" stroke="#5a4a22" stroke-width="0.6" stroke-linejoin="round"/>
+            <rect x="16" y="16" width="240" height="167" fill="#000" filter="url(#lostGrain)" opacity="0.55"/>
 
-            <g fill="none" stroke="#3a2b16" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <!-- compass rose -->
-              <path d="M44 28 L48 44 L44 60 L40 44 Z" fill="rgba(58,43,22,0.18)"/>
-              <path d="M28 44 L44 40 L60 44 L44 48 Z"/>
-              <!-- mountains -->
-              <path d="M118 72 L131 50 L144 72 M134 72 L150 42 L166 72"/>
-              <path d="M143 50 L150 42 L157 50" stroke-width="1.2"/>
-              <!-- woods -->
-              <path d="M88 108 L94 96 L100 108 Z M98 116 L104 104 L110 116 Z M80 120 L86 108 L92 120 Z"/>
-              <!-- the tavern -->
-              <path d="M46 160 V146 L57 136 L68 146 V160 Z" fill="#b5392b" fill-opacity="0.85"/>
-              <path d="M54 160 V152 H60 V160"/>
-              <!-- river -->
-              <path d="M196 188 C190 170 206 160 198 144 S204 124 214 114" stroke="rgba(58,43,22,0.45)" stroke-width="3"/>
+            <g class="lost-map-region" text-anchor="middle">
+              <text x="72" y="66">Viridian Ocean</text>
+              <text x="130" y="42">Sanguine Reef</text>
+              <text x="129" y="106">Slumbering Deep</text>
+              <text x="118" y="170">Boiling Sea</text>
+              <text x="52" y="152">Gallant Expanse</text>
+              <text x="206" y="162">The Haze</text>
             </g>
-
-            <text x="57" y="178" class="lost-map-label" text-anchor="middle">Tavern</text>
-            <text x="44" y="24" class="lost-map-label lost-map-label--sm" text-anchor="middle">N</text>
-            <text x="186" y="44" class="lost-map-label lost-map-label--faint" text-anchor="middle" transform="rotate(-6 186 44)">here be dragons</text>
-
-            <!-- on-map stretch of the trail -->
-            <path class="lost-trail" d="M60 146 C90 140 100 152 120 128 S150 96 180 110 S215 130 232 96 S262 64 290 72"/>
+            <!-- worn inner frame line, like the original's border -->
+            <rect x="16" y="16" width="240" height="167" fill="none" stroke="rgba(58,43,22,0.45)" stroke-width="0.8"/>
           </g>
+
+          <path class="lost-trail" d="M68 56 C90 62 110 58 130 62 S160 88 185 96 S225 104 250 96 S278 70 292 74"/>
+          <circle cx="66" cy="55" r="3.2" fill="none" stroke="#b5392b" stroke-width="1.6"/>
+          <circle cx="66" cy="55" r="1.1" fill="#b5392b"/>
 
           <text x="306" y="68" class="lost-map-q" text-anchor="middle">?</text>
           <text x="302" y="104" class="lost-map-here" text-anchor="middle" transform="rotate(-8 302 104)">you are here</text>
