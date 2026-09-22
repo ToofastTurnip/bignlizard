@@ -6,13 +6,13 @@ Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming g
 
 ## Games
 
-- [Pantheon Loreholders](https://bignlizard.com/#games): A deck-building card game where players assemble pantheons of gods and battle for supremacy, with strategic combat inspired by Magic: The Gathering. 2–4 players, 15–30 min. Status: Playtesting. Playable demo: https://huggingface.co/spaces/toofastturnip/pantheon
+- [Pantheon Lorekeepers](https://bignlizard.com/#games): A deck-building card game where players assemble pantheons of gods and battle for supremacy, with strategic combat inspired by Magic: The Gathering. 2–4 players, 15–30 min. Status: Playtesting. Playable demo: https://huggingface.co/spaces/toofastturnip/pantheon
 - [Elephants Dancing](https://bignlizard.com/#games): A chaotic party game where players attend concerts at a music festival to achieve enlightenment. 2–6 players, 20–60 min. Status: In development.
-- [Pantheon Mobile](https://bignlizard.com/#games): A mobile adaptation of Pantheon Loreholders. 2–4 players, 15–30 min. Status: Coming 2028.
+- [Pantheon Mobile](https://bignlizard.com/#games): A mobile adaptation of Pantheon Lorekeepers. 2–4 players, 15–30 min. Status: Coming 2028.
 
 ## News & Events
 
-- [Company News & Events](https://bignlizard.com/#news): Announcements including the Pantheon Loreholders demo launch, playtesting sessions at conventions (e.g. No Land Beyond), and an open call for contributing artists.
+- [Company News & Events](https://bignlizard.com/#news): Announcements including the Pantheon Lorekeepers demo launch, playtesting sessions at conventions (e.g. No Land Beyond), and an open call for contributing artists.
 
 ## About
 
