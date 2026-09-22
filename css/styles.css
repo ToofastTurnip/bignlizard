@@ -1695,7 +1695,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 
 .lost-map {
-  width: min(340px, 100%);
+  width: min(480px, 100%);
   height: auto;
   margin: 0 auto var(--space-4);
   transform: rotate(-3deg);
@@ -1705,25 +1705,26 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 
 .lost-trail {
   fill: none;
-  stroke: #b5392b;
-  stroke-width: 2.4;
+  stroke: var(--color-parchment);
+  stroke-width: 2.2;
   stroke-linecap: round;
-  stroke-dasharray: 1 7;
+  stroke-dasharray: 1 6;
   animation: lost-trail-march 1.4s linear infinite;
 }
-.lost-trail--wall { stroke: var(--color-parchment); opacity: 0.8; }
 @keyframes lost-trail-march {
-  to { stroke-dashoffset: -8; }
+  to { stroke-dashoffset: -7; }
 }
 
-.lost-map-label {
-  font-family: var(--font-scrawl);
-  font-weight: 700;
-  font-size: 15px;
-  fill: #3a2b16;
+.lost-map-region {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 6.4px;
+  letter-spacing: 0.04em;
+  fill: #f3ead2;
+  stroke: rgba(20, 26, 30, 0.55);
+  stroke-width: 1.4px;
+  paint-order: stroke;
 }
-.lost-map-label--sm { font-size: 11px; }
-.lost-map-label--faint { font-size: 14px; fill: rgba(58, 43, 22, 0.6); }
 
 .lost-map-q {
   font-family: var(--font-display);
