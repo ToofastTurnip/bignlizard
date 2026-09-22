@@ -136,8 +136,8 @@
                leaves Silver Harbor and sails straight off the torn edge onto
                the wall, where "you are here" -->
           <defs>
-            <clipPath id="lostMapPaper">
-              <polygon points="14,18 60,10 110,16 160,8 205,14 248,10 238,34 250,58 236,84 248,110 238,136 250,162 244,188 200,184 150,192 100,186 50,192 12,186 18,140 10,96 16,56"/>
+            <clipPath id="lostMapSea">
+              <polygon points="16.5,16.5 70,14.5 130,17.5 190,14.5 244.5,16.5 236.5,34 248.5,58 234.5,84 246.5,110 236.5,136 248.5,162 240.5,185.5 190,184.5 130,186.5 70,183.5 16.5,185.5 14.5,150 17.5,100 14.5,50"/>
             </clipPath>
             <linearGradient id="lostSea" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#5f7b70"/>
@@ -201,16 +201,16 @@
             </g>
           </defs>
 
-          <!-- cream margin, then the sea torn right along with it -->
-          <polygon points="14,18 60,10 110,16 160,8 205,14 248,10 238,34 250,58 236,84 248,110 238,136 250,162 244,188 200,184 150,192 100,186 50,192 12,186 18,140 10,96 16,56" fill="#efe2bd" stroke="rgba(58,43,22,0.35)" stroke-width="1"/>
-          <g clip-path="url(#lostMapPaper)">
-            <rect x="16" y="16" width="240" height="167" fill="url(#lostSea)"/>
+          <!-- cream margin on the worn sides; the sea runs right up to the tear -->
+          <polygon points="12,12 70,10 130,13 190,10 246,12 238,34 250,58 236,84 248,110 238,136 250,162 242,190 190,189 130,191 70,188 12,190 10,150 13,100 10,50" fill="#efe2bd" stroke="rgba(58,43,22,0.35)" stroke-width="1"/>
+          <g clip-path="url(#lostMapSea)">
+            <rect x="10" y="8" width="244" height="186" fill="url(#lostSea)"/>
             <ellipse cx="129" cy="93" rx="46" ry="38" fill="url(#lostDeep)"/>
             <ellipse cx="127" cy="152" rx="52" ry="34" fill="url(#lostBoil)"/>
             <ellipse cx="208" cy="146" rx="48" ry="38" fill="url(#lostHaze)"/>
             <use href="#lostLand" fill="#c9dccf" opacity="0.45" filter="url(#lostShallows)"/>
             <use href="#lostLand" fill="#a08e4a" stroke="#5a4a22" stroke-width="0.6" stroke-linejoin="round"/>
-            <rect x="16" y="16" width="240" height="167" fill="#000" filter="url(#lostGrain)" opacity="0.55"/>
+            <rect x="10" y="8" width="244" height="186" fill="#000" filter="url(#lostGrain)" opacity="0.55"/>
 
             <g class="lost-map-region" text-anchor="middle">
               <text x="72" y="66">Viridian Ocean</text>
@@ -221,7 +221,7 @@
               <text x="206" y="162">The Haze</text>
             </g>
             <!-- worn inner frame line, like the original's border -->
-            <rect x="16" y="16" width="240" height="167" fill="none" stroke="rgba(58,43,22,0.45)" stroke-width="0.8"/>
+            <path d="M244.5 16.5 L190 14.5 L130 17.5 L70 14.5 L16.5 16.5 L14.5 50 L17.5 100 L14.5 150 L16.5 185.5 L70 183.5 L130 186.5 L190 184.5 L240.5 185.5" fill="none" stroke="rgba(58,43,22,0.45)" stroke-width="0.8"/>
           </g>
 
           <path class="lost-trail" d="M68 56 C90 62 110 58 130 62 S160 88 185 96 S225 104 250 96 S278 70 292 74"/>
