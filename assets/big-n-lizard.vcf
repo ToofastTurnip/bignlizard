@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Taylor;Mitch;;;
+FN:Mitch Taylor
+ORG:Big N Lizard
+EMAIL;TYPE=INTERNET,WORK:mitch@bignlizard.com
+URL:https://bignlizard.com/
+NOTE:Indie tabletop board game studio.
+END:VCARD

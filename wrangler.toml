@@ -3,3 +3,5 @@ compatibility_date = "2026-07-17"
 
 [assets]
 directory = "."
+# Serve 404.html (with a real 404 status) for any path that doesn't match a file
+not_found_handling = "404-page"

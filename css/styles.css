@@ -1675,6 +1675,171 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 
 /* ==========================================================================
+   Shared by the 404 and /card pages (both reuse the hero's stone wall)
+   ========================================================================== */
+
+.hero-title--long { font-size: clamp(2.1rem, 5vw, 3.6rem); }
+
+/* The static cards-popped toaster, shown at every width rather than
+   only on phones (see .hero-logo-mobile) */
+.hero-logo-mobile--always { display: block; }
+
+/* ==========================================================================
+   404 page: a torn map whose trail wanders off the edge
+   ========================================================================== */
+
+.hero--lost .eyebrow,
+.hero--card .eyebrow {
+  color: var(--color-gold-bright);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.85);
+}
+
+.lost-map {
+  width: min(340px, 100%);
+  height: auto;
+  margin: 0 auto var(--space-4);
+  transform: rotate(-3deg);
+  filter: drop-shadow(3px 8px 6px rgba(0, 0, 0, 0.5));
+  overflow: visible;
+}
+
+.lost-trail {
+  fill: none;
+  stroke: #b5392b;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1 7;
+  animation: lost-trail-march 1.4s linear infinite;
+}
+.lost-trail--wall { stroke: var(--color-parchment); opacity: 0.8; }
+@keyframes lost-trail-march {
+  to { stroke-dashoffset: -8; }
+}
+
+.lost-map-label {
+  font-family: var(--font-scrawl);
+  font-weight: 700;
+  font-size: 15px;
+  fill: #3a2b16;
+}
+.lost-map-label--sm { font-size: 11px; }
+.lost-map-label--faint { font-size: 14px; fill: rgba(58, 43, 22, 0.6); }
+
+.lost-map-q {
+  font-family: var(--font-display);
+  font-size: 34px;
+  fill: var(--color-gold-bright);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lost-q-bob 2.6s ease-in-out infinite;
+}
+@keyframes lost-q-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(6deg); }
+}
+.lost-map-here {
+  font-family: var(--font-scrawl);
+  font-weight: 700;
+  font-size: 16px;
+  fill: var(--color-parchment);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lost-trail, .lost-map-q { animation: none !important; }
+}
+
+/* ==========================================================================
+   /card: landing page for the business-card QR code
+   ========================================================================== */
+
+.card-quests {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 460px;
+  margin: 0 auto var(--space-4);
+  text-align: left;
+}
+
+/* Shadow and tilt live on the <li>, the torn-paper clip-path on the <a>,
+   so the drop-shadow isn't clipped away (same split as .news-item /
+   .note-paper) */
+.card-quests li {
+  transform: rotate(var(--tilt, -0.8deg));
+  filter: drop-shadow(2px 6px 5px rgba(0, 0, 0, 0.45));
+  transition: transform var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out);
+}
+.card-quests li:nth-child(even) { --tilt: 0.9deg; }
+.card-quests li:nth-child(3n) { --tilt: -0.4deg; }
+.card-quests li:hover {
+  transform: rotate(0deg) translateY(-3px);
+  filter: drop-shadow(3px 9px 8px rgba(0, 0, 0, 0.55));
+}
+.card-quests li:has(:focus-visible) {
+  outline: 3px solid var(--color-gold-bright);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.card-quest:focus-visible { outline: none; }
+
+.card-quest {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: 14px 20px;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(120, 92, 52, 0.14), transparent),
+    linear-gradient(165deg, #fbf3df 0%, #f3e6c4 60%, #e9d8ac 100%);
+  background-blend-mode: multiply, normal;
+  clip-path: polygon(0% 6%, 12% 1%, 30% 4%, 52% 0%, 74% 3%, 90% 0%, 100% 5%, 99% 50%, 100% 94%, 86% 100%, 64% 96%, 42% 100%, 20% 97%, 3% 100%, 1% 50%);
+  color: var(--color-ink);
+}
+.card-quest--featured {
+  background: linear-gradient(180deg, var(--color-ember) 0%, var(--color-ember-dark) 100%);
+  color: var(--color-paper);
+}
+
+.card-quest-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  color: var(--color-ember-dark);
+}
+.card-quest--featured .card-quest-icon { color: var(--color-gold-bright); }
+
+.card-quest-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.card-quest-desc {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+}
+.card-quest--featured .card-quest-desc { color: var(--color-parchment); }
+
+.card-ps {
+  font-family: var(--font-scrawl);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-parchment-dim);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.85);
+  transform: rotate(-2deg);
+  margin: 0;
+}
+
+/* Most scans happen on a phone, so pull the first link up toward the fold */
+@media (max-width: 720px) {
+  .hero--card .hero-content { padding-top: var(--space-4); }
+  .hero--card .hero-logo-mobile { width: 84px; margin-bottom: var(--space-2); }
+  .hero--card .hero-sub { margin-bottom: var(--space-4); }
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 
