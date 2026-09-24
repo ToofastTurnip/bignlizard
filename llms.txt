@@ -18,6 +18,7 @@ Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming g
 
 - [About Big N Lizard](https://bignlizard.com/#about): Studio background and mission.
 - Contact: mitch@bignlizard.com
+- Social: [YouTube](https://www.youtube.com/@bignlizard), [TikTok](https://www.tiktok.com/@bignlizard), [Instagram](https://www.instagram.com/bignlizard/)
 
 ## Optional
 

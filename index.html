@@ -537,14 +537,16 @@
         <p>Big N Lizard is a small, independent board game studio. We design tabletop games with hand-drawn art, warm storytelling, and just enough chaos to make game night memorable. No investors, no committees. Just a table, some dice, and too many index cards.</p>
         <p>Want to playtest, collaborate, or just say hello?</p>
         <a href="mailto:mitch@bignlizard.com" class="btn btn-primary">Get in Touch</a>
-        <button type="button" class="fortune-seal" id="fortuneSeal" aria-label="A wax seal">
-          <svg class="fortune-seal-svg" viewBox="0 0 44 44" aria-hidden="true">
-            <path d="M22,2 C30,1 36,6 38,14 C41,21 37,29 31,34 C25,39 16,39 10,34 C4,29 1,21 3,14 C5,6 12,1 22,2 Z" fill="url(#waxRed)"/>
-            <circle cx="22" cy="20" r="11" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
-            <path d="M22,12 L26,19 L34,20 L28,25 L30,33 L22,28 L14,33 L16,25 L10,20 L18,19 Z" fill="rgba(255,255,255,0.32)"/>
-          </svg>
-        </button>
-        <p class="fortune-scrap" id="fortuneScrap" aria-hidden="true"></p>
+        <span class="fortune">
+          <button type="button" class="fortune-seal" id="fortuneSeal" aria-label="A wax seal">
+            <svg class="fortune-seal-svg" viewBox="0 0 44 44" aria-hidden="true">
+              <path d="M22,2 C30,1 36,6 38,14 C41,21 37,29 31,34 C25,39 16,39 10,34 C4,29 1,21 3,14 C5,6 12,1 22,2 Z" fill="url(#waxRed)"/>
+              <circle cx="22" cy="20" r="11" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
+              <path d="M22,12 L26,19 L34,20 L28,25 L30,33 L22,28 L14,33 L16,25 L10,20 L18,19 Z" fill="rgba(255,255,255,0.32)"/>
+            </svg>
+          </button>
+          <span class="fortune-scrap" id="fortuneScrap" aria-hidden="true"></span>
+        </span>
         <span class="sr-only" id="fortune-live" aria-live="polite"></span>
       </div>
     </div>
@@ -593,6 +595,18 @@
       </svg>
       <span class="bee-badge-tip" aria-hidden="true">Built by<span class="bee-badge-tip-name">Bee &amp; Gold<span class="bee-badge-spark bee-badge-spark-1">&#10022;</span><span class="bee-badge-spark bee-badge-spark-2">&#10022;</span><span class="bee-badge-spark bee-badge-spark-3">&#10022;</span><span class="bee-badge-spark bee-badge-spark-4">&#10022;</span></span></span>
     </a>
+
+    <div class="footer-social" aria-label="Social links">
+      <a href="https://www.youtube.com/@bignlizard" target="_blank" rel="noopener noreferrer" aria-label="Big N Lizard on YouTube">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9.2v5.6l4.8-2.8Z" fill="currentColor"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@bignlizard" target="_blank" rel="noopener noreferrer" aria-label="Big N Lizard on TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5v11.2a3.7 3.7 0 1 1-3.7-3.7M14 3.5c.4 2.6 2.2 4.3 4.8 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://www.instagram.com/bignlizard/" target="_blank" rel="noopener noreferrer" aria-label="Big N Lizard on Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg>
+      </a>
+    </div>
 
     <p class="footer-copy">&copy; <span id="year">2026</span> Big N Lizard. All rights reserved.</p>
   </div>

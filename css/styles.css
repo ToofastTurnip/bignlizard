@@ -1577,6 +1577,11 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 
 /* --- Hidden easter egg: a small wax seal beside "Get in Touch" that cracks
    open to reveal a random tavern fortune. No visible label on purpose. --- */
+.fortune {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
 .fortune-seal {
   position: relative;
   display: inline-flex;
@@ -1608,7 +1613,8 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   animation: seal-crack 420ms ease-in-out;
 }
 
-.about-text .fortune-scrap {
+.fortune-scrap {
+  display: block;
   position: absolute;
   left: calc(100% + 14px);
   top: 50%;
@@ -1636,12 +1642,16 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   transform: translateY(-50%) rotate(-4deg) scale(1);
 }
 @media (max-width: 720px) {
+  /* Drop below the seal, right-aligned to it, so it never runs off-screen */
   .fortune-scrap {
-    left: 50%;
-    top: calc(100% + 14px);
-    transform: translateX(-50%) rotate(-4deg) scale(0.85);
+    left: auto;
+    right: -8px;
+    top: calc(100% + 12px);
+    max-width: min(240px, calc(100vw - 48px));
+    transform-origin: top right;
+    transform: rotate(-4deg) scale(0.85);
   }
-  .fortune-scrap.is-open { transform: translateX(-50%) rotate(-4deg) scale(1); }
+  .fortune-scrap.is-open { transform: rotate(-4deg) scale(1); }
 }
 
 /* ==========================================================================
@@ -1869,9 +1879,33 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 .footer-nav a:hover { color: var(--color-gold-bright); }
 
+.footer-social {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+.footer-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 50%;
+  color: var(--color-parchment-dim);
+  transition: color var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
+}
+.footer-social a:hover,
+.footer-social a:focus-visible {
+  color: var(--color-gold-bright);
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+.footer-social svg { width: 20px; height: 20px; }
+
 /* --- Built by Bee & Gold badge: idle bee mark that swaps for a
-   sparkle-trimmed credit line on hover/focus (no separate social presence
-   yet, so this replaces the old social-icon row). --- */
+   sparkle-trimmed credit line on hover/focus. --- */
 .footer-bee { justify-self: end; }
 .bee-badge {
   position: relative;
