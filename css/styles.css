@@ -1065,6 +1065,15 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   --box-tint-dark: #b3822c;
 }
 .game-box--soon .box-icon { color: var(--color-ink); }
+/* Real cover art: the landscape key art faded to black top and bottom to
+   fill the portrait front (see assets/pantheon-lorekeepers-cover.webp).
+   Side faces pick up the starfield's near-black purple. */
+.game-box--pantheon {
+  --box-tint: #050308;
+  --box-tint-light: #1f1430;
+  --box-tint-dark: #120b1c;
+  --box-cover: url("../assets/pantheon-lorekeepers-cover.webp");
+}
 
 @media (prefers-reduced-motion: reduce) {
   .game-box {
