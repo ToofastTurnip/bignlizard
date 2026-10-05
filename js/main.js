@@ -349,6 +349,53 @@
     });
   }
 
+  // Napkin Games page: "Roll for it" picks a random napkin, scrolls to it,
+  // and lights it up. Never picks the same one twice in a row.
+  var napkinRoll = document.getElementById("napkinRoll");
+  var napkins = document.querySelectorAll(".napkin");
+  if (napkinRoll && napkins.length) {
+    var napkinDieNum = document.getElementById("napkinDieNum");
+    var napkinLive = document.getElementById("napkin-live");
+    var lastNapkin = -1;
+
+    napkinRoll.addEventListener("click", function () {
+      var idx;
+      do {
+        idx = Math.floor(Math.random() * napkins.length);
+      } while (napkins.length > 1 && idx === lastNapkin);
+      lastNapkin = idx;
+
+      var picked = napkins[idx];
+      var title = picked.querySelector(".napkin-title");
+      if (napkinDieNum) napkinDieNum.textContent = String(idx + 1);
+      if (napkinLive && title) napkinLive.textContent = "Rolled a " + (idx + 1) + ": " + title.textContent;
+
+      napkinRoll.classList.remove("is-rolling");
+      void napkinRoll.offsetWidth; // restart the tumble on rapid re-clicks
+      napkinRoll.classList.add("is-rolling");
+
+      napkins.forEach(function (n) {
+        n.classList.remove("is-picked");
+      });
+      void picked.offsetWidth;
+      picked.classList.add("is-picked");
+      picked.scrollIntoView({ behavior: stillPlease.matches ? "auto" : "smooth", block: "center" });
+      picked.focus({ preventScroll: true });
+    });
+    napkinRoll.addEventListener("animationend", function (e) {
+      if (e.animationName === "napkin-die-tumble") napkinRoll.classList.remove("is-rolling");
+    });
+    napkins.forEach(function (n) {
+      n.addEventListener("animationend", function (e) {
+        if (e.animationName === "napkin-picked") n.classList.remove("is-picked");
+      });
+      // reduced motion has no animation, so its outline highlight is cleared on blur
+      n.addEventListener("blur", function () {
+        if (stillPlease.matches) n.classList.remove("is-picked");
+      });
+    });
+  }
+
   // Hidden easter egg: torches rarely flare; catching one with a well-timed
   // click/tap/Enter is a "critical hit". No visible hint while idle.
   var torches = document.querySelectorAll(".torch");

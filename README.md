@@ -8,6 +8,7 @@ Static marketing site for Big n Lizard, an indie fantasy board game company. Pla
 index.html       All page markup (hero, upcoming games, news/events, about, footer)
 404.html         "Ye Wandered Off the Map" page, served for any missing URL (wrangler.toml)
 card.html        Landing page for the business-card QR code (bignlizard.com/card)
+napkin-games.html Napkin Games: one-page RPGs (bignlizard.com/napkin-games)
 css/styles.css   All styling (design tokens at the top of the file)
 js/main.js       Mobile nav toggle, scroll-reveal, footer year, header scroll shadow
 assets/          favicon, hero stone-wall background texture
@@ -20,6 +21,7 @@ Everything is placeholder copy for the client to swap in real content:
 
 - **Upcoming Games** (`index.html`, `#games` section): 3 sample `game-card` entries. Swap in real titles, blurbs, player counts, and status badges (`status-dev` / `status-playtest` / `status-soon`).
 - **Company News & Events** (`index.html`, `#news` section): 4 sample `news-item` entries. Swap in real convention dates/locations and announcements.
+- **Napkin Games** (`napkin-games.html`): one `<li>` per game in `.napkin-list` (placeholders for now). The comment above the list explains the fields. The games themselves are sold and hosted on itch.io (bignlizard.itch.io); the site only links out.
 - **Contact email**: currently `hello@bignlizard.com`. Update the two `mailto:` links in `index.html`.
 - **Social links**: footer icons currently point to `#`. Add real Instagram / BoardGameGeek / Discord URLs.
 - **Logo/crest**: the circular emblem is a placeholder built in SVG (a stylized lizard curled in a badge). Swap the inline `<svg class="brand-crest">` / `<svg class="hero-crest">` markup for real artwork whenever the client has a finished logo.
