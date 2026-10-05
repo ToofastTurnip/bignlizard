@@ -3,28 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy | Big N Lizard</title>
-<meta name="description" content="How Big N Lizard handles data on bignlizard.com. Short version: we don't collect any, aside from basic aggregate visit counts through Cloudflare.">
-<link rel="canonical" href="https://bignlizard.com/privacy.html">
+<title>Napkin Games | Big N Lizard</title>
+<meta name="description" content="Napkin Games from Big N Lizard: one-page tabletop RPGs, available on itch.io. Print one, grab a pencil and some dice, and play.">
+<link rel="canonical" href="https://bignlizard.com/napkin-games">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <!-- Fonts are self-hosted (see fonts/LICENSE.md) so no visitor data reaches Google -->
 <link rel="preload" href="fonts/cinzel-decorative-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/crimson-text-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/caveat-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<!-- Only the gradient this page actually uses, borrowed from index.html's shared defs -->
+<!-- Roughens the napkin paper's edges (used by .napkin::before in styles.css) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <radialGradient id="waxGreen" cx="35%" cy="30%" r="75%">
-      <stop offset="0%" stop-color="#6f9a68"/>
-      <stop offset="55%" stop-color="#3f6b3c"/>
-      <stop offset="100%" stop-color="#20361f"/>
-    </radialGradient>
-  </defs>
+  <filter id="napkinWarp" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.016 0.024" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="11" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
 </svg>
 
 <header class="site-header" id="site-header">
@@ -53,7 +51,7 @@
     </a>
     <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="index.html#games">Games</a>
-      <a href="napkin-games.html">Napkin Games</a>
+      <a href="napkin-games.html" aria-current="page">Napkin Games</a>
       <a href="index.html#news">News</a>
       <a href="index.html#about">About</a>
       <a href="mailto:mitch@bignlizard.com" class="nav-contact">Contact</a>
@@ -65,47 +63,88 @@
 </header>
 
 <main id="main">
-  <section id="privacy" class="section about-section">
-    <div class="container about-inner">
-      <div class="privacy-seal" aria-hidden="true">
-        <svg viewBox="0 0 44 44">
-          <path d="M22,2 C30,1 36,6 38,14 C41,21 37,29 31,34 C25,39 16,39 10,34 C4,29 1,21 3,14 C5,6 12,1 22,2 Z" fill="url(#waxGreen)"/>
-          <circle cx="22" cy="20" r="11" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1"/>
-          <path d="M22,12 L26,19 L34,20 L28,25 L30,33 L22,28 L14,33 L16,25 L10,20 L18,19 Z" fill="rgba(255,255,255,0.28)"/>
-        </svg>
+  <section id="napkins" class="section napkin-section">
+    <div class="table-bg" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="napkin-intro">
+        <h1 class="section-title">Napkin Games</h1>
+        <p class="section-lede">Little games that fit on a single page, mostly written at the bar when we should've been finishing the big ones. Print one, grab a pencil and some dice, and you're playing before the next round arrives.</p>
+
+        <button type="button" class="napkin-roll" id="napkinRoll">
+          <svg class="napkin-die" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="5" y="5" width="38" height="38" rx="8" fill="#f5ead1" stroke="#2c1c10" stroke-width="3"/>
+            <text class="napkin-die-num" id="napkinDieNum" x="24" y="32" text-anchor="middle">?</text>
+          </svg>
+          <span>Can't decide? Roll for it.</span>
+        </button>
+        <span class="sr-only" id="napkin-live" aria-live="polite"></span>
       </div>
 
-      <p class="eyebrow">Posted at the Bar</p>
-      <h1 class="section-title">Privacy Policy</h1>
-      <p class="section-lede">Short version: we're not much for record-keeping. This site doesn't ask you to log in, doesn't track you around, and has nothing worth selling. Here's the full account anyway.</p>
+      <!--
+        One <li> per game. To add a game:
+        - copy a <li>, give the <article> a unique id (used for /napkin-games#id links)
+        - games are sold/hosted on itch.io; point the "Get it on itch.io" button at the game's itch page
+        - stamp: napkin-stamp--price (e.g. "$2"), napkin-stamp--pwyw, or napkin-stamp--free
+        - add napkin--ringed to put a tankard ring stain on the napkin
+        PLACEHOLDER GAMES BELOW: swap in the real ones.
+      -->
+      <ul class="napkin-list">
 
-      <div class="about-text privacy-body">
-        <h2>What We Collect</h2>
-        <p>Big N Lizard doesn't collect personal information through this website. There's no account system, no shopping cart, no newsletter sign-up, no ad network, and no tracking scripts embedded in these pages. Even our fonts are hosted here rather than fetched from Google Fonts, so no third party learns you stopped by.</p>
+        <li>
+          <article class="napkin napkin--ringed" id="slackers-and-supervisors" tabindex="-1">
+            <span class="napkin-stamp napkin-stamp--price">$2</span>
+            <h2 class="napkin-title">Slackers and Supervisors</h2>
+            <p class="napkin-hook">A ragtag crew of losers work together to survive a chaotic night shift at their dead-end job.</p>
+            <ul class="napkin-meta">
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>2&ndash;5 players</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>30&ndash;90 min</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l8-12 8 12Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>GM needed</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><circle cx="15" cy="15" r="1.4" fill="currentColor"/></svg>Pencil + 2d6</li>
+            </ul>
+            <div class="napkin-actions">
+              <a class="btn btn-primary btn-sm" href="https://bignlizard.itch.io/slackers-and-supervisors" target="_blank" rel="noopener noreferrer">Get it on itch.io</a>
+            </div>
+          </article>
+        </li>
 
-        <h2>Visit Counts, via Cloudflare</h2>
-        <p>This site is served through Cloudflare, our hosting and CDN provider. As part of ordinary infrastructure, Cloudflare keeps basic, aggregate visit counts: roughly how many people stopped by and when. We look at this to see whether anyone's reading the tavern notices, not to identify individual visitors. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare's privacy policy</a> for how they handle it.</p>
+        <!-- <li>
+          <article class="napkin" id="goblin-tax" tabindex="-1">
+            <span class="napkin-stamp napkin-stamp--pwyw">Pay what you want</span>
+            <h2 class="napkin-title">Goblin Tax Season</h2>
+            <p class="napkin-hook">The goblin king wants his cut. You're the collectors, the villagers are hiding the silver in very creative places, and nobody wrote down where.</p>
+            <ul class="napkin-meta">
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>1 GM + 2&ndash;4 players</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>1&ndash;2 hours</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l8-12 8 12Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>GM needed</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><circle cx="15" cy="15" r="1.4" fill="currentColor"/></svg>Pencil + a fistful of d6</li>
+            </ul>
+            <div class="napkin-actions">
+              <a class="btn btn-primary btn-sm" href="https://bignlizard.itch.io/" target="_blank" rel="noopener noreferrer">Get it on itch.io</a>
+            </div>
+          </article>
+        </li>
 
-        <h2>Google Search Console</h2>
-        <p>We also use Google Search Console, a free tool that shows us how bignlizard.com turns up in Google Search: which searches led people here, whether Google can crawl the site properly, and the like. It's run by Google under Google's own privacy policy, and it only ever hands us aggregate search performance data, not anything tied to you personally.</p>
+        <li>
+          <article class="napkin" id="lizard-knight" tabindex="-1">
+            <span class="napkin-stamp napkin-stamp--free">Free</span>
+            <h2 class="napkin-title">The Lizard Who Would Be Knight</h2>
+            <p class="napkin-hook">A solo journaling game. Draw cards and write the diary of a very small lizard on a very large quest. It probably won't end well, but it will end memorably.</p>
+            <ul class="napkin-meta">
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Solo</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>30&ndash;60 min</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l8-12 8 12Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>No GM</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="11" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="9" y="6" width="11" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Deck of cards + journal</li>
+            </ul>
+            <div class="napkin-actions">
+              <a class="btn btn-primary btn-sm" href="https://bignlizard.itch.io/" target="_blank" rel="noopener noreferrer">Get it on itch.io</a>
+            </div>
+          </article>
+        </li> -->
 
-        <h2>Cookies</h2>
-        <p>We don't set any cookies ourselves. If your browser shows one from this domain, it's coming from Cloudflare's infrastructure for basic security and performance, not from us tracking you across the site or the web.</p>
+      </ul>
 
-        <h2>Leaving the Tavern</h2>
-        <p>A few links on this site lead elsewhere, most notably the playable Pantheon Lorekeepers demo hosted on Hugging Face. Once you click through, you're on their turf: their own privacy policy and terms apply, not ours. We don't send them anything about you, and we don't see anything about what you do once you're there.</p>
-
-        <h2>If You Write to Us</h2>
-        <p>If you email us, say at <a href="mailto:mitch@bignlizard.com">mitch@bignlizard.com</a>, we'll see your email address and whatever you tell us. We use it only to write back, and we won't sell it, rent it, or hand it off to anyone else.</p>
-
-        <h2>Changes to This Notice</h2>
-        <p>If this policy changes, we'll update the date below. Given how little we collect, we don't expect much to move.</p>
-
-        <h2>Contact</h2>
-        <p>Questions about any of this? Email <a href="mailto:mitch@bignlizard.com">mitch@bignlizard.com</a>.</p>
-
-        <p class="privacy-updated">Last updated: August 13, 2026.</p>
-      </div>
+      <p class="napkin-footnote">Wrote a hack of one of these? We'd love to see it: <a href="mailto:mitch@bignlizard.com">mitch@bignlizard.com</a></p>
     </div>
   </section>
 </main>
@@ -137,7 +176,7 @@
 
     <nav class="footer-nav" aria-label="Footer">
       <a href="index.html#games">Games</a>
-      <a href="napkin-games.html">Napkin Games</a>
+      <a href="napkin-games.html" aria-current="page">Napkin Games</a>
       <a href="index.html#news">News</a>
       <a href="index.html#about">About</a>
       <a href="mailto:mitch@bignlizard.com">Contact</a>
