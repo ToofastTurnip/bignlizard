@@ -1240,6 +1240,14 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 .game-card--side .game-blurb { font-size: 0.98rem; }
 .status-side { background: var(--color-ink-soft); color: var(--color-parchment); }
 
+/* Phones: rows stack vertically (see the 720px .game-row rule), so center the
+   napkins like the game boxes, leave room above the badge for the fanned
+   sheets, and stop the 360px flex-basis from becoming a min-height. */
+@media (max-width: 720px) {
+  .napkin-stack { width: clamp(110px, 32vw, 140px); margin: var(--space-2) auto var(--space-4); }
+  .game-card--side { flex: 1 1 auto; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .napkin-stack-sheet { transition: none; }
 }
