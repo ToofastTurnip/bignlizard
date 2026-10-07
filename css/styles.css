@@ -60,6 +60,12 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Highlighted text glows like a coal instead of browser-default blue. */
+::selection {
+  background: var(--color-ember);
+  color: var(--color-paper);
+}
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -161,6 +167,102 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   width: 34px;
   height: 34px;
   flex-shrink: 0;
+}
+
+/* Header toaster hiccup: hovering the brand makes the cards hop out of the
+   slots and drop back, front card first, while the toaster gives a tiny jolt.
+   Plays once per hover. Wrapper <g>s carry the motion so the cards' own
+   rotate() transform attributes stay untouched. */
+.crest-card { transform-box: view-box; }
+.site-header .brand-crest { overflow: visible; }
+.site-header .brand:hover .brand-crest,
+.site-header .brand:focus-visible .brand-crest {
+  animation: crest-jolt 0.5s ease-out;
+}
+.site-header .brand:hover .crest-card,
+.site-header .brand:focus-visible .crest-card {
+  animation: crest-card-hop 0.6s both;
+}
+.site-header .brand:hover .crest-card--back1,
+.site-header .brand:focus-visible .crest-card--back1 { animation-delay: 0.06s; }
+.site-header .brand:hover .crest-card--back2,
+.site-header .brand:focus-visible .crest-card--back2 { animation-delay: 0.12s; }
+@keyframes crest-card-hop {
+  0% { transform: translateY(0); animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1); }
+  35% { transform: translateY(-14px); animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.5); }
+  70% { transform: translateY(0); animation-timing-function: ease-out; }
+  82% { transform: translateY(-2.5px); animation-timing-function: ease-in; }
+  100% { transform: translateY(0); }
+}
+@keyframes crest-jolt {
+  0%, 100% { transform: translate(0, 0); }
+  15% { transform: translate(-0.6px, 0.6px); }
+  30% { transform: translate(0.6px, -0.4px); }
+  45% { transform: translate(0, 0); }
+}
+/* Typing "lizard" (main.js): the same card hop as hovering, on demand. */
+.site-header .brand .brand-crest.is-celebrating {
+  animation: crest-jolt 0.5s ease-out;
+}
+.site-header .brand .brand-crest.is-celebrating .crest-card {
+  animation: crest-card-hop 0.6s both;
+}
+.site-header .brand .brand-crest.is-celebrating .crest-card--back1 { animation-delay: 0.06s; }
+.site-header .brand .brand-crest.is-celebrating .crest-card--back2 { animation-delay: 0.12s; }
+
+/* Logo mashing (main.js): five fast clicks and the toaster overheats. It
+   rattles harder and harder as it goes red-hot (0.7s, OVERHEAT_MS in
+   main.js), then blows apart into .crest-shard pieces that reform. */
+.site-header .brand .brand-crest.is-overheating {
+  animation: crest-overheat 0.7s ease-in forwards;
+}
+.site-header .brand .brand-crest.is-exploded { visibility: hidden; }
+@keyframes crest-overheat {
+  0%   { color: var(--color-gold-bright); transform: translate(0, 0); filter: none; }
+  15%  { transform: translate(-1px, 0.5px) rotate(-2deg); }
+  30%  { transform: translate(1px, -0.5px) rotate(2deg); }
+  45%  { transform: translate(-1.5px, 1px) rotate(-4deg) scale(1.04); }
+  60%  { transform: translate(1.5px, -1px) rotate(4deg) scale(1.08); }
+  75%  { transform: translate(-2px, 1px) rotate(-5deg) scale(1.12); }
+  90%  { transform: translate(2px, -1px) rotate(5deg) scale(1.18); }
+  100% { color: #ff6a2c; filter: drop-shadow(0 0 6px rgba(255, 106, 44, 0.9)); transform: scale(1.22); }
+}
+
+.crest-shard {
+  position: fixed;
+  z-index: 1500;
+  display: block;
+  pointer-events: none;
+}
+.crest-shard .brand-crest {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.crest-flash {
+  position: fixed;
+  z-index: 1499;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 200, 0.95) 0%, rgba(255, 150, 60, 0.6) 35%, rgba(255, 106, 44, 0) 70%);
+  pointer-events: none;
+}
+
+.toaster-smoke {
+  position: fixed;
+  z-index: 1500;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(215, 205, 192, 0.9) 0%, rgba(180, 170, 158, 0.45) 45%, rgba(180, 170, 158, 0) 70%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-crest, .crest-card { animation: none !important; }
 }
 
 .brand-word {
@@ -267,6 +369,17 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   align-items: center;
   overflow: hidden;
   isolation: isolate;
+}
+
+/* Parallax: everything fixed to the wall shifts together by --wall-shift
+   (set on scroll by main.js) so the title block appears to float in front.
+   Uses the standalone `translate` property so it composes with each
+   element's own transform (the window's skew, the right torch's flip). */
+.hero-bg,
+.hero-window,
+.torch,
+.hero-fx-canvas {
+  translate: 0 var(--wall-shift, 0px);
 }
 
 .hero-bg {
@@ -637,6 +750,64 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 
 .torch--right { transform: scaleX(-1); }
 
+/* --- Snuff the torch (main.js): press-and-hold puts a torch out for a few
+   seconds. These rules cover the flat SVG torch (no-WebGL fallback);
+   hero-fx.js drives the WebGL flame off the same classes. --- */
+.torch {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.torch .flame-set,
+.torch .flame-glow {
+  transition: opacity 1.8s linear;
+}
+/* !important so it beats .flame-glow's own opacity pulse animation */
+.torch.is-snuffing .flame-set,
+.torch.is-snuffing .flame-glow { opacity: 0.35 !important; }
+.torch.is-snuffed .flame-set,
+.torch.is-snuffed .flame-glow,
+.torch.is-snuffed .ember {
+  opacity: 0 !important;
+  transition: opacity 0.25s ease-in;
+}
+.torch.is-snuffed .torch-smoke { animation-duration: 1.6s; }
+.torch.is-relighting .flame-set,
+.torch.is-relighting .flame-glow {
+  animation: torch-relight 1.6s ease-in both;
+}
+@keyframes torch-relight {
+  0% { opacity: 0; }
+  20% { opacity: 0.6; }
+  30% { opacity: 0.15; }
+  55% { opacity: 0.8; }
+  65% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* That side of the hero falls into shadow while its torch is out. Lives on
+   the vignette layer, so it darkens the wall but never the title block. */
+.hero-vignette::before,
+.hero-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease-out;
+  pointer-events: none;
+}
+.hero-vignette::before {
+  background: radial-gradient(ellipse 45% 85% at 10% 55%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.25) 60%, transparent 100%);
+}
+.hero-vignette::after {
+  background: radial-gradient(ellipse 45% 85% at 90% 55%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.25) 60%, transparent 100%);
+}
+.hero.is-dim-left .hero-vignette::before,
+.hero.is-dim-right .hero-vignette::after {
+  opacity: 1;
+  transition-duration: 0.5s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-bg { animation: none; }
   .flame-glow, .flame-set, .flame-outer, .flame-mid, .flame-core, .flame-hot, .ember {
@@ -693,7 +864,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
     transform: none;
     transform-style: flat;
   }
-  .box-top, .box-spine, .box-bottom { display: none; }
+  .box-top, .box-spine, .box-bottom, .box-peek, .box-smoke { display: none; }
   .box-front {
     transform: none;
     box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.45), 0 10px 18px rgba(44,28,16,0.3);
@@ -960,7 +1131,7 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 /* Staggered vertical rhythm via margin/padding (not transform) so it reads
    as a hand-placed zigzag without conflicting with .reveal's own transform. */
 .game-row:nth-child(2) { margin-top: calc(var(--space-5) * -1); padding-left: var(--space-5); }
-.game-row:nth-child(3) { margin-top: var(--space-3); padding-right: var(--space-5); }
+.game-row:nth-child(3) { margin-top: calc(var(--space-5) * -1); padding-right: var(--space-5); }
 
 /* --- 3D box art: a small CSS box that idles with a slow tilt and grows
    slightly on hover. Front face doubles as a placeholder using the game's
@@ -1026,6 +1197,83 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   transform: rotateX(90deg) translateZ(calc(var(--box-depth) / 2));
   box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.4);
 }
+/* Lid lift: clicking a box (main.js toggles .is-open) swings the top face
+   up on a hinge along its back edge. The leading translate/rotate/translate
+   moves the pivot from the face's center to that edge, then the face's
+   resting transform follows unchanged. On close (the base transition), the
+   card ducks back in first and the lid waits for it to clear the rim before
+   dropping shut, with no overshoot, or it would swing through the card. */
+.box-top {
+  transition: transform 0.35s cubic-bezier(0.55, 0, 0.9, 0.6) 0.2s;
+}
+.game-box.is-open .box-top {
+  transform:
+    translate3d(0, calc(var(--box-depth) / -2), calc(var(--box-depth) / -2))
+    rotateX(72deg)
+    translate3d(0, calc(var(--box-depth) / 2), calc(var(--box-depth) / 2))
+    rotateX(90deg) translateZ(calc(var(--box-depth) / 2));
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+}
+/* A real card (Pantheon Lorekeepers' Acolyte of Zeus) tucked inside the
+   box, standing upright mid-depth. Hidden below the rim while shut (the box
+   is always seen slightly from below, so the inside never shows); slides up
+   and peeks over the rim once the lid is up. */
+.box-peek {
+  position: absolute;
+  top: 0;
+  left: 22%;
+  width: 56%;
+  aspect-ratio: 5 / 7;
+  border-radius: 6px;
+  background: #0b0a0c url("../assets/pantheon-acolyte-card.webp") center / cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  transform: translateY(8%);
+  transition: transform 0.2s ease-in;
+}
+.game-box.is-open .box-peek {
+  transform: translateY(-48%) rotate(-4deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.12s;
+}
+
+/* The unannounced ("?") boxes have nothing to show yet, so opening them
+   lets out a puff of smoke instead: three soft blobs that billow up from
+   the rim and fade, staggered, once per opening. */
+.box-smoke {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+.box-smoke span {
+  position: absolute;
+  bottom: -10%;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(128, 116, 102, 0.75) 0%, rgba(150, 138, 122, 0.45) 40%, rgba(150, 138, 122, 0) 70%);
+  opacity: 0;
+}
+.box-smoke span:nth-child(1) { left: 12%; }
+.box-smoke span:nth-child(2) { left: 30%; }
+.box-smoke span:nth-child(3) { left: 46%; }
+.game-box.is-open .box-smoke span {
+  animation: box-smoke-puff 1.8s cubic-bezier(0.25, 0.6, 0.4, 1) 0.1s both;
+}
+.game-box.is-open .box-smoke span:nth-child(2) { animation-delay: 0.22s; }
+.game-box.is-open .box-smoke span:nth-child(3) { animation-delay: 0.34s; }
+@keyframes box-smoke-puff {
+  0%   { transform: translate(0, 45%) scale(0.35); opacity: 0; }
+  18%  { transform: translate(0, 5%) scale(0.75); opacity: 0.95; }
+  100% { transform: translate(var(--drift, 0), -95%) scale(1.5); opacity: 0; }
+}
+.box-smoke span:nth-child(1) { --drift: -18%; }
+.box-smoke span:nth-child(3) { --drift: 22%; }
+@media (min-width: 721px) {
+  .game-box-wrap { cursor: pointer; }
+}
+
 .box-spine {
   top: 0; bottom: 0; right: 0;
   width: var(--box-depth);
@@ -1338,6 +1586,30 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 }
 @media (max-width: 900px) {
   .board-arrow { display: none; }
+}
+
+/* Arrow quiver: when the news board scrolls into view, the shaft (and its
+   shadow) wobbles about the point where it enters the wood, like it just
+   thunked in. main.js adds .is-thunked once. The origins are each layer's
+   entry point in its own coordinates. */
+.board-arrow-wobble { transform-box: view-box; }
+.board-arrow-wobble--shaft { transform-origin: 60px 24px; }
+.board-arrow-wobble--shadow { transform-origin: 103px 50px; }
+.board-arrow.is-thunked .board-arrow-wobble {
+  animation: arrow-quiver 0.9s ease-out;
+}
+@keyframes arrow-quiver {
+  0%   { transform: rotate(0deg); }
+  12%  { transform: rotate(-5deg); }
+  26%  { transform: rotate(4deg); }
+  40%  { transform: rotate(-2.6deg); }
+  54%  { transform: rotate(1.6deg); }
+  68%  { transform: rotate(-0.8deg); }
+  82%  { transform: rotate(0.3deg); }
+  100% { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .board-arrow.is-thunked .board-arrow-wobble { animation: none; }
 }
 
 /* --- "Hugh wuz here" corner scrap --- */

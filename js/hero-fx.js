@@ -304,6 +304,7 @@
   var HOT = new THREE.Color("#fff2c4");
   var MID = new THREE.Color("#f5a23c");
   var COOL = new THREE.Color("#b5392b");
+  var SMOKE = new THREE.Color("#5a524c");
 
   // Soft cool fill so the iron isn't pure black in shadow, like the ambient
   // light off a stone wall, plus one fixed "sun" so every part of the
@@ -473,7 +474,13 @@
       light: light,
       flicker: Math.random() * Math.PI * 2,
       flaring: false,
-      caughtAt: -1
+      caughtAt: -1,
+      // "snuff the torch" (main.js): fire is the live flame level, 0..1,
+      // eased toward whatever the torch's current snuff state asks for
+      fire: 1,
+      snuffingAt: -1,
+      snuffedAt: -1,
+      relightAt: -1
     };
     return group;
   }
@@ -484,13 +491,16 @@
 
   // The flame anchor (viewBox y≈74, see designY() above) sits at the mouth
   // of the torch's cup — read straight off the live layout so the whole
-  // group tracks the responsive clamp() sizing.
+  // group tracks the responsive clamp() sizing. Measured against the canvas
+  // (not the hero) because the parallax in main.js shifts the torches and
+  // this canvas together as one "wall" layer; measuring from the hero would
+  // apply that shift twice.
   function anchorTorch(group) {
     var r = group.userData.svgEl.getBoundingClientRect();
-    var heroRect = hero.getBoundingClientRect();
+    var canvasRect = canvas.getBoundingClientRect();
     group.position.set(
-      r.left - heroRect.left + r.width * 0.5,
-      cssToWorldY(r.top - heroRect.top + r.height * 0.336),
+      r.left - canvasRect.left + r.width * 0.5,
+      cssToWorldY(r.top - canvasRect.top + r.height * 0.336),
       0
     );
     group.scale.setScalar(r.width / 100); // 100 = the viewBox's own width
@@ -503,38 +513,72 @@
       var caught = ud.torchEl.classList.contains("is-caught");
       if (caught && ud.caughtAt < 0) ud.caughtAt = performance.now();
       if (!caught) ud.caughtAt = -1;
+      var cl = ud.torchEl.classList;
+      var now = performance.now();
+      ud.snuffingAt = cl.contains("is-snuffing") ? (ud.snuffingAt < 0 ? now : ud.snuffingAt) : -1;
+      ud.snuffedAt = cl.contains("is-snuffed") ? (ud.snuffedAt < 0 ? now : ud.snuffedAt) : -1;
+      ud.relightAt = cl.contains("is-relighting") ? (ud.relightAt < 0 ? now : ud.relightAt) : -1;
     });
     obs.observe(group.userData.torchEl, { attributes: true, attributeFilter: ["class"] });
   }
   watchTorch(torchLeft);
   watchTorch(torchRight);
 
+  // Flame level the snuff state is asking for right now. Holding shrinks
+  // the flame (after a short grace, so an ordinary click doesn't dip it),
+  // snuffed is out, and relighting sputters up from nothing to full.
+  var SNUFF_HOLD_MS = 2000; // keep in step with main.js
+  var RELIGHT_MS = 1600;
+  function fireTarget(ud, now, t) {
+    if (ud.snuffedAt >= 0) return 0;
+    if (ud.snuffingAt >= 0) {
+      var held = Math.max(0, (now - ud.snuffingAt - 250) / (SNUFF_HOLD_MS - 250));
+      return Math.max(0.25, 1 - 0.7 * Math.min(1, held)) * (0.9 + 0.1 * Math.sin(t * 23 + ud.flicker));
+    }
+    if (ud.relightAt >= 0) {
+      var k = Math.min(1, (now - ud.relightAt) / RELIGHT_MS);
+      // catches, falters, catches again
+      var sputter = 0.55 + 0.45 * Math.abs(Math.sin(t * 11 + ud.flicker));
+      return k * k * (k < 1 ? sputter : 1);
+    }
+    return 1;
+  }
+
   function updateTorch(group, dt, t) {
     var ud = group.userData;
     anchorTorch(group);
+
+    var now = performance.now();
+    var target = fireTarget(ud, now, t);
+    // gutters out fast, comes back a touch slower
+    ud.fire += (target - ud.fire) * Math.min(1, dt * (target < ud.fire ? 10 : 6));
+    var fire = ud.fire;
+    // a wisp of smoke for a couple of seconds after it goes out
+    var smoke = ud.snuffedAt >= 0 ? Math.max(0, 1 - (now - ud.snuffedAt) / 2600) : 0;
 
     var flareBoost = ud.flaring ? 1.8 : 1;
     var sinceCaught = ud.caughtAt >= 0 ? (performance.now() - ud.caughtAt) / 1000 : 999;
     var catchBoost = sinceCaught < 0.7 ? 1 + (0.7 - sinceCaught) * 2.6 : 1;
     var intensity = flareBoost * catchBoost;
 
-    ud.halo.material.opacity = 0.42 * intensity;
-    ud.halo.scale.setScalar(88 * (0.92 + 0.08 * Math.sin(t * 2)) * Math.min(intensity, 1.6));
-    ud.light.intensity = 1.8 * intensity * (0.85 + 0.15 * Math.sin(t * 9 + ud.flicker));
+    ud.halo.material.opacity = 0.42 * intensity * fire;
+    ud.halo.scale.setScalar(88 * (0.92 + 0.08 * Math.sin(t * 2)) * Math.min(intensity, 1.6) * (0.4 + 0.6 * fire));
+    ud.light.intensity = 1.8 * intensity * fire * (0.85 + 0.15 * Math.sin(t * 9 + ud.flicker));
 
     for (var i = 0; i < ud.particles.length; i++) {
       var p = ud.particles[i];
       p.age += dt * (0.8 + 0.45 * flareBoost);
       if (p.age >= p.life) resetParticle(p, false);
       var f = p.age / p.life;
-      var y = p.rise * f; // +Y = upward, this scene is standard three.js orientation
-      var x = p.baseX + Math.sin(t * 2 + p.seed) * p.sway * f;
+      var y = p.rise * f * (1 + smoke * 1.5); // +Y = upward, this scene is standard three.js orientation
+      var x = p.baseX + Math.sin(t * 2 + p.seed) * p.sway * f * (1 + smoke);
       p.sprite.position.set(x, y, (i % 2 === 0 ? 1 : -1) * (i * 0.01));
-      var scale = p.size * (0.5 + 0.5 * Math.sin(Math.min(f, 1) * Math.PI)) * intensity;
+      var scale = p.size * (0.5 + 0.5 * Math.sin(Math.min(f, 1) * Math.PI)) * intensity * (fire + smoke * 1.4);
       p.sprite.scale.set(scale, scale, 1);
       var col = f < 0.4 ? HOT.clone().lerp(MID, f / 0.4) : MID.clone().lerp(COOL, (f - 0.4) / 0.6);
+      if (smoke > 0) col.lerp(SMOKE, Math.min(1, smoke * 1.5) * (1 - fire));
       p.sprite.material.color.copy(col);
-      p.sprite.material.opacity = (1 - f) * 0.9;
+      p.sprite.material.opacity = (1 - f) * (0.9 * fire + 0.35 * smoke);
     }
   }
 
@@ -554,6 +598,10 @@
     updateBanner(bannerRight, t);
     updateTorch(torchLeft, dt, t);
     updateTorch(torchRight, dt, t);
+    // the banners are unlit (MeshBasicMaterial), so dim each by hand when
+    // the torch beside it is snuffed
+    bannerLeft.material.color.setScalar(0.5 + 0.5 * torchLeft.userData.fire);
+    bannerRight.material.color.setScalar(0.5 + 0.5 * torchRight.userData.fire);
     renderer.render(scene, camera);
     rafId = requestAnimationFrame(frame);
   }
