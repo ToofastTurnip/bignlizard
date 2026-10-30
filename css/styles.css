@@ -1414,6 +1414,24 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   margin-bottom: var(--space-3);
 }
 
+/* Gold call-to-action inside a blurb. The text itself is a deep amber
+   (plain --color-gold is ~2:1 on --color-paper and unreadable); the gold
+   comes from the pulsing text-shadow halo around it. */
+.play-cta {
+  color: #8f5e0c;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: play-cta-pulse 2.2s ease-in-out infinite;
+}
+@keyframes play-cta-pulse {
+  0%, 100% {
+    text-shadow: 0 0 2px rgba(240, 196, 100, 0.5), 0 0 6px rgba(216, 161, 58, 0.25);
+  }
+  50% {
+    text-shadow: 0 0 4px var(--color-gold-bright), 0 0 12px var(--color-gold), 0 0 22px rgba(216, 161, 58, 0.7);
+  }
+}
+
 .game-meta {
   display: flex;
   gap: var(--space-4);
