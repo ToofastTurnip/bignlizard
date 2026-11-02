@@ -850,25 +850,9 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
     align-items: flex-start;
     gap: var(--space-3);
   }
-  .game-box-wrap {
-    margin: 0 auto var(--space-2);
-    --box-w: clamp(140px, 46vw, 190px);
-    perspective: none;
-  }
   .game-card { width: 100%; }
-  /* flatten the 3D box to just its front face: fewer composited layers
-     (preserve-3d forces one per face) and no infinite tilt animation
-     running underneath the fold on a phone */
-  .game-box {
-    animation: none;
-    transform: none;
-    transform-style: flat;
-  }
-  .box-top, .box-spine, .box-bottom, .box-peek, .box-smoke { display: none; }
-  .box-front {
-    transform: none;
-    box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.45), 0 10px 18px rgba(44,28,16,0.3);
-  }
+  /* the 3D box's phone overrides live after its base rules; search
+     "flatten the 3D box" */
 }
 
 .scroll-cue {
@@ -1386,6 +1370,30 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   .game-card { flex: 1 1 auto; }
 }
 
+/* Phones: flatten the 3D box to just its front face: fewer composited
+   layers (preserve-3d forces one per face) and no infinite tilt animation
+   keeping the GPU busy (measured at roughly half the section's rendering
+   work). Same cascade-order pitfall as .game-card above: these must come
+   after the base .game-box-wrap/.game-box/.box-front rules and the 860px
+   --box-w override, or they lose on source order and silently do nothing. */
+@media (max-width: 720px) {
+  .game-box-wrap {
+    margin: 0 auto var(--space-2);
+    --box-w: clamp(140px, 46vw, 190px);
+    perspective: none;
+  }
+  .game-box {
+    animation: none;
+    transform: none;
+    transform-style: flat;
+  }
+  .box-top, .box-spine, .box-bottom, .box-peek, .box-smoke { display: none; }
+  .box-front {
+    transform: none;
+    box-shadow: inset 0 0 0 1.5px rgba(44,28,16,0.45), 0 10px 18px rgba(44,28,16,0.3);
+  }
+}
+
 .game-status {
   position: absolute;
   top: -12px;
@@ -1414,23 +1422,43 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   margin-bottom: var(--space-3);
 }
 
-/* Gold call-to-action inside a blurb. The text itself is a deep amber
-   (plain --color-gold is ~2:1 on --color-paper and unreadable); the gold
-   comes from the pulsing text-shadow halo around it. */
+/* Play-the-demo pill under a blurb. Purely visual: the card's stretched
+   link sits on top and takes the tap. Dark wood with bright gold so it is
+   the highest-contrast thing on the paper card even with motion off (a gold
+   glow on cream barely shows). The halo pulses on a pseudo-element's
+   opacity, which the compositor handles without repainting, so it stays
+   cheap enough to leave running on phones. */
 .play-cta {
-  color: #8f5e0c;
-  font-weight: 600;
-  white-space: nowrap;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+  padding: 10px 20px 10px 16px;
+  border-radius: 999px;
+  background: var(--color-wood);
+  color: var(--color-gold-bright);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background var(--duration-base) var(--ease-out);
+}
+.play-cta svg { width: 16px; height: 16px; }
+.play-cta::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px var(--color-gold), 0 0 18px var(--color-gold);
+  opacity: 0;
   animation: play-cta-pulse 2.2s ease-in-out infinite;
+  pointer-events: none;
 }
 @keyframes play-cta-pulse {
-  0%, 100% {
-    text-shadow: 0 0 2px rgba(240, 196, 100, 0.5), 0 0 6px rgba(216, 161, 58, 0.25);
-  }
-  50% {
-    text-shadow: 0 0 4px var(--color-gold-bright), 0 0 12px var(--color-gold), 0 0 22px rgba(216, 161, 58, 0.7);
-  }
+  50% { opacity: 1; }
 }
+.game-card:hover .play-cta { background: var(--color-wood-light); }
 
 .game-meta {
   display: flex;
