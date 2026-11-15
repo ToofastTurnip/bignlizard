@@ -16,7 +16,7 @@ Big N Lizard is a single-page site (https://bignlizard.com/) covering upcoming g
 
 ## News & Events
 
-- [Company News & Events](https://bignlizard.com/#news): Announcements including the Pantheon Lorekeepers demo launch, playtesting sessions at conventions (e.g. No Land Beyond), and an open call for contributing artists.
+- [Company News & Events](https://bignlizard.com/#news): Announcements including the Pantheon Lorekeepers demo launch, the launch of the Pantheon Lorekeepers website (https://pantheonlorekeepers.com/), playtesting sessions at conventions (e.g. No Land Beyond), and an open call for contributing artists.
 
 ## About
 
