@@ -79,7 +79,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   padding: 0 var(--space-4);
 }
 
-a, button, .btn, .nav-toggle, .game-card, .news-item {
+/* Not .game-card: a card is clickable only when it holds a stretched link
+   (.game-card:has(.game-card-link) below). Pantheon's card has buttons
+   instead, and a pointer over the whole card would promise a click it
+   doesn't have. */
+a, button, .btn, .nav-toggle, .news-item {
   cursor: pointer;
 }
 
@@ -1422,9 +1426,17 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   margin-bottom: var(--space-3);
 }
 
-/* Play-the-demo pill under a blurb. Purely visual: the card's stretched
-   link sits on top and takes the tap. Dark wood with bright gold so it is
-   the highest-contrast thing on the paper card even with motion off (a gold
+/* A card's link buttons, under the blurb. These are the only links on the
+   card: the rest of it isn't clickable. */
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* Play-the-demo pill. Dark wood with bright gold so it is the
+   highest-contrast thing on the paper card even with motion off (a gold
    glow on cream barely shows). The halo pulses on a pseudo-element's
    opacity, which the compositor handles without repainting, so it stays
    cheap enough to leave running on phones. */
@@ -1433,7 +1445,6 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: var(--space-3);
   padding: 10px 20px 10px 16px;
   border-radius: 999px;
   background: var(--color-wood);
@@ -1458,7 +1469,18 @@ a, button, .btn, .nav-toggle, .game-card, .news-item {
 @keyframes play-cta-pulse {
   50% { opacity: 1; }
 }
-.game-card:hover .play-cta { background: var(--color-wood-light); }
+.play-cta:hover { background: var(--color-wood-light); }
+
+/* The second pill (the game's website): same shape, outlined instead of
+   filled and without the halo, so Play the demo stays the obvious first
+   click. */
+.play-cta--secondary {
+  background: transparent;
+  color: var(--color-wood);
+  box-shadow: inset 0 0 0 2px var(--color-wood);
+}
+.play-cta--secondary::after { content: none; }
+.play-cta--secondary:hover { background: rgba(44, 28, 16, 0.08); }
 
 .game-meta {
   display: flex;
