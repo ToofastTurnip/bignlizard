@@ -8,8 +8,36 @@
 <link rel="canonical" href="https://bignlizard.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <!-- Fonts are self-hosted (see fonts/LICENSE.md) so no visitor data reaches Google -->
+<!-- Everything the hero draws in its first frame, requested up front so it's
+     all in hand at first paint instead of trickling in (each font swap, and the
+     wall texture, used to land as its own visible pop) -->
 <link rel="preload" href="fonts/cinzel-decorative-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/crimson-text-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/crimson-text-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/caveat-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/stone-wall.webp" as="image" type="image/webp" fetchpriority="high">
+<script>
+  // Visitors who'll get js/hero-fx.js's WebGL torches and banners are known
+  // right here, so: (1) start downloading three.js now, rather than only once
+  // hero-fx.js has loaded and asked for it; and (2) hold back the flat SVG
+  // torches (fx-pending, see styles.css) so the 3D torches and banners appear
+  // together instead of the SVG torches showing, vanishing, then being
+  // replaced. Keep the checks in step with the top of hero-fx.js. Must stay
+  // above the stylesheets: an inline script waits for any CSS before it.
+  (function () {
+    if (window.innerWidth <= 720 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var root = document.documentElement;
+    root.classList.add("fx-pending");
+    var link = document.createElement("link");
+    link.rel = "modulepreload";
+    link.href = "js/vendor/three.module.min.js";
+    document.head.appendChild(link);
+    // On a slow connection (or if hero-fx.js never arrives), stop waiting and
+    // show the SVG torches; hero-fx.js cross-fades to its own if they turn up.
+    setTimeout(function () { root.classList.remove("fx-pending"); }, 2500);
+  })();
+</script>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/styles.css">
 </head>

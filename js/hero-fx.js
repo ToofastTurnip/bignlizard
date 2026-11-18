@@ -3,26 +3,57 @@
 // in for each flat SVG torch. Everything here is progressive enhancement —
 // the hand-drawn SVG torch stays in the markup and stays fully functional
 // (including the "catch the flare" easter egg in main.js, and the click/
-// keyboard hitbox) whether or not this file runs at all. We only hide the
-// SVG's visuals, and only after WebGL has actually started rendering their
-// replacement.
+// keyboard hitbox) whether or not this file runs at all. Its visuals are only
+// held back while this file is loading (fx-pending, set in index.html's
+// <head>, with its own timeout) and hidden for good once WebGL has drawn
+// their replacement.
 (async function () {
   var MOBILE_BREAKPOINT = 720; // matches the .torch { display: none } breakpoint in styles.css
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  if (window.innerWidth <= MOBILE_BREAKPOINT) return;
+  // The inline script in index.html's <head> makes the same checks as below
+  // and, if they pass, hides the SVG torches (fx-pending) until this file
+  // has its replacement on screen. Every early exit has to hand them back.
+  var root = document.documentElement;
+  function bail() {
+    root.classList.remove("fx-pending");
+  }
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return bail();
+  if (window.innerWidth <= MOBILE_BREAKPOINT) return bail();
 
   var hero = document.querySelector(".hero");
   var torchLeftEl = document.querySelector(".torch--left");
   var torchRightEl = document.querySelector(".torch--right");
   var torchLeftSvg = torchLeftEl && torchLeftEl.querySelector(".torch-svg");
   var torchRightSvg = torchRightEl && torchRightEl.querySelector(".torch-svg");
-  if (!hero || !torchLeftSvg || !torchRightSvg) return;
+  if (!hero || !torchLeftSvg || !torchRightSvg) return bail();
 
-  // Deferred until we know we'll actually use it: this is a ~670KB/~165KB
-  // gzipped library, not worth fetching for visitors the checks above
-  // already ruled out (mobile, reduced-motion, or an unsupported browser).
-  var THREE = await import("./vendor/three.module.min.js");
+  // Emblem art for the banners: hand-supplied SVGs, fetched now so they
+  // load alongside three.js and are ready before the first frame, rather
+  // than popping onto an already-visible banner.
+  function loadImage(src) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { resolve(null); }; // a blank diamond beats no banner
+      img.src = src;
+    });
+  }
+  var emblemsReady = Promise.all([
+    loadImage("assets/emblem-viking-hat.svg"),
+    loadImage("assets/emblem-coconut.svg")
+  ]);
+
+  // Only fetched once we know we'll use it: this is a ~670KB/~165KB gzipped
+  // library, not worth sending to visitors the checks above ruled out
+  // (mobile, reduced-motion). The <head> script has usually already started
+  // this download via modulepreload, so the import picks up that copy.
+  var THREE;
+  try {
+    THREE = await import("./vendor/three.module.min.js");
+  } catch (e) {
+    return bail();
+  }
 
   var canvas = document.createElement("canvas");
   canvas.className = "hero-fx-canvas";
@@ -36,7 +67,7 @@
       powerPreference: "low-power"
     });
   } catch (e) {
-    return; // no WebGL: leave the SVG torches exactly as they were
+    return bail(); // no WebGL: leave the SVG torches exactly as they were
   }
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -76,28 +107,14 @@
   var BANNER_W = 74;
   var BANNER_H = 290;
 
-  // Emblem art: hand-supplied SVGs (assets/emblem-*.svg), drawn onto the
-  // gold diamond once each loads. Loading is async, but same-origin local
-  // SVGs decode almost instantly, so in practice the diamond never shows
-  // empty for more than a frame or two.
-  var EMBLEM_SRC = {
-    helmet: "assets/emblem-viking-hat.svg",
-    coconut: "assets/emblem-coconut.svg"
-  };
-
-  function drawEmblemImage(src, cx, cy, maxDim, ctx, tex, xStretch) {
-    var img = new Image();
-    img.onload = function () {
-      var scale = maxDim / Math.max(img.naturalWidth, img.naturalHeight);
-      var dw = img.naturalWidth * scale * xStretch;
-      var dh = img.naturalHeight * scale;
-      ctx.drawImage(img, cx - dw / 2, cy - dh / 2, dw, dh);
-      tex.needsUpdate = true;
-    };
-    img.src = src;
+  function drawEmblemImage(img, cx, cy, maxDim, ctx, xStretch) {
+    var scale = maxDim / Math.max(img.naturalWidth, img.naturalHeight);
+    var dw = img.naturalWidth * scale * xStretch;
+    var dh = img.naturalHeight * scale;
+    ctx.drawImage(img, cx - dw / 2, cy - dh / 2, dw, dh);
   }
 
-  function makeBannerTexture(emblem) {
+  function makeBannerTexture(emblemImg) {
     var w = 256, h = 512;
     var c = document.createElement("canvas");
     c.width = w;
@@ -171,22 +188,21 @@
     ctx.strokeStyle = "#c9a227";
     ctx.stroke();
 
+    // the black emblem (a Viking helmet or a coconut, per-banner) on top of
+    // the diamond
+    if (emblemImg) drawEmblemImage(emblemImg, w / 2, h * 0.32, 30, ctx, emblemXStretch);
+
     var tex = new THREE.CanvasTexture(c);
     // Without this, three.js's color management treats the canvas's sRGB hex
     // values as already-linear and re-encodes them on output, which is why
     // the crimson/gold were washing out lighter than the hex codes above.
     tex.colorSpace = THREE.SRGBColorSpace;
-
-    // the black emblem (a Viking helmet or a coconut, per-banner) sits on
-    // top of the diamond once its SVG loads
-    var src = EMBLEM_SRC[emblem];
-    if (src) drawEmblemImage(src, w / 2, h * 0.32, 30, ctx, tex, emblemXStretch);
-
     return tex;
   }
 
-  var bannerTextureLeft = makeBannerTexture("helmet");
-  var bannerTextureRight = makeBannerTexture("coconut");
+  var emblems = await emblemsReady;
+  var bannerTextureLeft = makeBannerTexture(emblems[0]);  // Viking helmet
+  var bannerTextureRight = makeBannerTexture(emblems[1]); // coconut
 
   function makeBanner(texture) {
     var geo = new THREE.PlaneGeometry(BANNER_W, BANNER_H, 6, 22);
@@ -591,9 +607,7 @@
   var running = false;
   var rafId = null;
 
-  function frame() {
-    var dt = Math.min(clock.getDelta(), 0.05);
-    var t = clock.elapsedTime;
+  function draw(dt, t) {
     updateBanner(bannerLeft, t);
     updateBanner(bannerRight, t);
     updateTorch(torchLeft, dt, t);
@@ -603,6 +617,11 @@
     bannerLeft.material.color.setScalar(0.5 + 0.5 * torchLeft.userData.fire);
     bannerRight.material.color.setScalar(0.5 + 0.5 * torchRight.userData.fire);
     renderer.render(scene, camera);
+  }
+
+  function frame() {
+    var dt = Math.min(clock.getDelta(), 0.05);
+    draw(dt, clock.elapsedTime);
     rafId = requestAnimationFrame(frame);
   }
 
@@ -618,6 +637,22 @@
     rafId = null;
   }
 
+  // Hold the first frame until everything in it is ready, so torches and
+  // banners appear together in one go:
+  //  - shaders compiled ahead of time, off the main thread where the
+  //    browser supports it, instead of stalling inside the first render
+  //  - webfonts in, since the torches' positions depend on the titleblock's
+  //    width and a late font swap would shift the strip the banners are
+  //    fitted to
+  try {
+    await Promise.all([
+      renderer.compileAsync(scene, camera),
+      document.fonts && document.fonts.ready
+    ]);
+  } catch (e) {
+    // a compile hiccup here isn't fatal: render() compiles whatever's left
+  }
+
   resize();
   layoutBanners();
 
@@ -630,14 +665,14 @@
     }, 120);
   });
 
-  // The torches' positions depend on the titleblock's width, so a webfont
-  // swapping in after first layout moves the strip the banners are fitted to.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () {
-      resize();
-      layoutBanners();
-    });
-  }
+  // Draw the first frame and swap it in within the same task, so the browser
+  // paints the finished 3D scene and the hidden SVG torches together; the
+  // canvas's CSS transition fades it all up as one piece. Before, the SVG
+  // torches were hidden a frame or more before WebGL had drawn anything,
+  // leaving a visible gap with no torches at all.
+  draw(0, 0);
+  hero.classList.add("hero--fx");
+  root.classList.remove("fx-pending");
 
   // requestAnimationFrame is already throttled by the browser while the tab
   // is in the background, so the only case worth handling ourselves is
@@ -660,10 +695,4 @@
     if (document.visibilityState === "hidden") stop();
     else if (heroIntersecting) start();
   });
-
-  // We only get here once the WebGLRenderer above was created successfully,
-  // so it's safe to hide the flat SVG flame/glow/embers/smoke now in favor
-  // of their WebGL replacement (which starts rendering within a frame or
-  // two, via the IntersectionObserver above).
-  hero.classList.add("hero--fx");
 })();

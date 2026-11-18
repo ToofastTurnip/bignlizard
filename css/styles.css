@@ -396,8 +396,11 @@ a, button, .btn, .nav-toggle, .news-item {
     /* a couple of grime stains over the stonework */
     radial-gradient(ellipse 200px 280px at 94% 85%, rgba(15, 13, 10, 0.3), transparent 70%),
     radial-gradient(ellipse 180px 220px at 4% 25%, rgba(15, 13, 10, 0.22), transparent 70%),
-    /* hand-painted stone-wall tile: see assets/stone-wall.jpg */
-    url("../assets/stone-wall.jpg");
+    /* hand-painted stone-wall tile: see assets/stone-wall.webp. The color
+       under it is the tile's average, so if the tile is a moment behind
+       first paint the wall fills in with texture rather than flashing from
+       near-black to stone grey */
+    url("../assets/stone-wall.webp") #646362;
   background-size: auto, auto, auto, 512px 512px;
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   animation: ember-light 6s ease-in-out infinite;
@@ -475,12 +478,32 @@ a, button, .btn, .nav-toggle, .news-item {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  /* hero-fx.js draws its first frame before adding .hero--fx, so the 3D
+     torches and banners fade up together as one piece */
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+.hero--fx .hero-fx-canvas {
+  opacity: 1;
 }
 
-/* Only swapped in once hero-fx.js has WebGL actually up and rendering, so
-   there's never a gap where neither the SVG torch nor its replacement
-   shows. The .torch container itself (and its click/keyboard "catch the
-   flare" hitbox) is untouched — only its drawn contents are hidden. */
+/* While hero-fx.js is still loading (fx-pending is set on <html> by the
+   inline script in index.html's <head>, only for visitors who'll get the
+   WebGL layer), the SVG torches wait too, so the scene lights up all at
+   once rather than SVG torches showing and then being swapped out. If the
+   3D is slow, that script gives up and shows these after a couple of
+   seconds; the transition makes the later hand-off a cross-fade. */
+.torch-svg {
+  transition: opacity 0.4s ease-out;
+}
+.fx-pending .torch-svg {
+  opacity: 0;
+}
+
+/* Hidden once hero-fx.js has WebGL actually up and rendering, so there's
+   never a gap where neither the SVG torch nor its replacement shows. The
+   .torch container itself (and its click/keyboard "catch the flare" hitbox)
+   is untouched — only its drawn contents are hidden. */
 .hero--fx .torch-svg {
   opacity: 0 !important;
 }
